@@ -62,12 +62,15 @@ import time
 import datetime as DT
 import os
 import inspect
+from master_mi_config import as_datetime, get_section
 
 
 # In[2]:
 
 
 pd.set_option('display.max_columns', None)
+
+_UPDATE_CONFIG = get_section("update")
 
 
 # In[3]:
@@ -97,23 +100,23 @@ pd.set_option('display.max_columns', None)
 # In[6]:
 
 
-ReRun_Update = False
+ReRun_Update = _UPDATE_CONFIG["ReRun_Update"]
 
-MI_FileName = 'GS CDD FullList Master template Full - 2025-10-31.xlsx'
+MI_FileName = _UPDATE_CONFIG["MI_FileName"]
 
-MICutOffDate = DT.datetime(2025, 10, 30, 0, 0)
+MICutOffDate = as_datetime(_UPDATE_CONFIG["MICutOffDate"])
 
-LttrArrangeT6090BeginDate = DT.datetime(2025, 11, 10, 0, 0)
-LttrArrangeT6090EndDate = DT.datetime(2025, 11, 16, 0, 0)
+LttrArrangeT6090BeginDate = as_datetime(_UPDATE_CONFIG["LttrArrangeT6090BeginDate"])
+LttrArrangeT6090EndDate = as_datetime(_UPDATE_CONFIG["LttrArrangeT6090EndDate"])
 
-LttrArrangeCurtEffBeginDate = DT.datetime(2025, 11, 17, 0, 0)
-LttrArrangeCurtEffEndDate = DT.datetime(2025, 11, 23, 0, 0)
+LttrArrangeCurtEffBeginDate = as_datetime(_UPDATE_CONFIG["LttrArrangeCurtEffBeginDate"])
+LttrArrangeCurtEffEndDate = as_datetime(_UPDATE_CONFIG["LttrArrangeCurtEffEndDate"])
 
-FCRCutoffDateMst = DT.datetime(2025, 10, 31, 0, 0)
-DummyDate = DT.datetime(1999, 1, 1, 0, 0)
-NoWorkers = 4
+FCRCutoffDateMst = as_datetime(_UPDATE_CONFIG["FCRCutoffDateMst"])
+DummyDate = as_datetime(_UPDATE_CONFIG["DummyDate"])
+NoWorkers = _UPDATE_CONFIG["NoWorkers"]
 
-ConsequeceManagementWorkflowDate = DT.datetime(2025, 7, 1, 0, 0)
+ConsequeceManagementWorkflowDate = as_datetime(_UPDATE_CONFIG["ConsequeceManagementWorkflowDate"])
 
 
 # In[7]:
@@ -4371,598 +4374,599 @@ def Debug_DisplayInfo(MstMI, ReqCol, Mode=0):
 
 
 # get_ipython().run_cell_magic('time', '', "if not ReRun_Update:\n    MIObject = pd.ExcelFile(MI_FileName)\n    MIMast = pd.read_excel(MIObject, 'GS CDD Fulllist')\n    RMTeamMapping = pd.read_excel(MIObject,'Team List')\n    PythonMappingMst = pd.read_excel(MIObject, 'Python Mapping')\n    CMMappingMst = pd.read_excel(MIObject, 'info04-Staffs List')\n    MIMast_c = MIMast.copy(deep=True)\n\n    MSExcelForCol = []\n\n    T90Col = ['T90 Decision Code', 'T90 Decision']\n    ExportCol = PythonMappingMst['Export Column']\n\n    CMTHMst = CMMappingMst.copy(deep=True)\n    CMTHMst = CMTHMst[CMTHMst['Team'].str.contains('CM', na=False)][['Leader / Manager']].dropna()\n    CMTHMst_New = pd.DataFrame(columns=['CMTH Name', 'CMTH Full Name'])\n    CMTHMst_New['CMTH Full Name'] = CMTHMst.sort_values(by=['Leader / Manager'])['Leader / Manager'].unique()\n    CMTHMst_New['CMTH Full Name Upper'] = CMTHMst_New['CMTH Full Name'].str.upper()\n    CMTHMst_New = CMTHMst_New.drop_duplicates(subset=['CMTH Full Name Upper'])\n    CMTHMst_New['CMTH Name'] = CMTHMst_New['CMTH Full Name Upper'].str.partition(' ')[0]\n\n    Sel_MultiName = CMTHMst_New['CMTH Name'].value_counts() > 1\n    Sel_MultiName = CMTHMst_New['CMTH Name'].isin(CMTHMst_New['CMTH Name'].value_counts()[Sel_MultiName].index)\n    CMTHMst_New.loc[Sel_MultiName, 'CMTH Name'] = CMTHMst_New[Sel_MultiName]['CMTH Full Name Upper']\n\n\n    CMTHMst = CMTHMst_New[~(CMTHMst_New['CMTH Full Name Upper'].str.contains('GREENIE CKL HO|ALFRED K H LEE|ALFRED KA HON LEE', na=False))]\n")
-if not ReRun_Update:
-    MIObject = pd.ExcelFile(MI_FileName)
-    MIMast = pd.read_excel(MIObject, 'GS CDD Fulllist')
-    RMTeamMapping = pd.read_excel(MIObject,'Team List')
-    PythonMappingMst = pd.read_excel(MIObject, 'Python Mapping')
-    CMMappingMst = pd.read_excel(MIObject, 'info04-Staffs List')
-    MIMast_c = MIMast.copy(deep=True)
-    MSExcelForCol = []
-    T90Col = ['T90 Decision Code', 'T90 Decision']
-    ExportCol = PythonMappingMst['Export Column']
-    CMTHMst = CMMappingMst.copy(deep=True)
-    CMTHMst = CMTHMst[CMTHMst['Team'].str.contains('CM', na=False)][['Leader / Manager']].dropna()
-    CMTHMst_New = pd.DataFrame(columns=['CMTH Name', 'CMTH Full Name'])
-    CMTHMst_New['CMTH Full Name'] = CMTHMst.sort_values(by=['Leader / Manager'])['Leader / Manager'].unique()
-    CMTHMst_New['CMTH Full Name Upper'] = CMTHMst_New['CMTH Full Name'].str.upper()
-    CMTHMst_New = CMTHMst_New.drop_duplicates(subset=['CMTH Full Name Upper'])
-    CMTHMst_New['CMTH Name'] = CMTHMst_New['CMTH Full Name Upper'].str.partition(' ')[0]
-    Sel_MultiName = CMTHMst_New['CMTH Name'].value_counts() > 1
-    Sel_MultiName = CMTHMst_New['CMTH Name'].isin(CMTHMst_New['CMTH Name'].value_counts()[Sel_MultiName].index)
-    CMTHMst_New.loc[Sel_MultiName, 'CMTH Name'] = CMTHMst_New[Sel_MultiName]['CMTH Full Name Upper']
-    CMTHMst = CMTHMst_New[~(CMTHMst_New['CMTH Full Name Upper'].str.contains('GREENIE CKL HO|ALFRED K H LEE|ALFRED KA HON LEE', na=False))]
+if __name__ == "__main__":
+    if not ReRun_Update:
+        MIObject = pd.ExcelFile(MI_FileName)
+        MIMast = pd.read_excel(MIObject, 'GS CDD Fulllist')
+        RMTeamMapping = pd.read_excel(MIObject,'Team List')
+        PythonMappingMst = pd.read_excel(MIObject, 'Python Mapping')
+        CMMappingMst = pd.read_excel(MIObject, 'info04-Staffs List')
+        MIMast_c = MIMast.copy(deep=True)
+        MSExcelForCol = []
+        T90Col = ['T90 Decision Code', 'T90 Decision']
+        ExportCol = PythonMappingMst['Export Column']
+        CMTHMst = CMMappingMst.copy(deep=True)
+        CMTHMst = CMTHMst[CMTHMst['Team'].str.contains('CM', na=False)][['Leader / Manager']].dropna()
+        CMTHMst_New = pd.DataFrame(columns=['CMTH Name', 'CMTH Full Name'])
+        CMTHMst_New['CMTH Full Name'] = CMTHMst.sort_values(by=['Leader / Manager'])['Leader / Manager'].unique()
+        CMTHMst_New['CMTH Full Name Upper'] = CMTHMst_New['CMTH Full Name'].str.upper()
+        CMTHMst_New = CMTHMst_New.drop_duplicates(subset=['CMTH Full Name Upper'])
+        CMTHMst_New['CMTH Name'] = CMTHMst_New['CMTH Full Name Upper'].str.partition(' ')[0]
+        Sel_MultiName = CMTHMst_New['CMTH Name'].value_counts() > 1
+        Sel_MultiName = CMTHMst_New['CMTH Name'].isin(CMTHMst_New['CMTH Name'].value_counts()[Sel_MultiName].index)
+        CMTHMst_New.loc[Sel_MultiName, 'CMTH Name'] = CMTHMst_New[Sel_MultiName]['CMTH Full Name Upper']
+        CMTHMst = CMTHMst_New[~(CMTHMst_New['CMTH Full Name Upper'].str.contains('GREENIE CKL HO|ALFRED K H LEE|ALFRED KA HON LEE', na=False))]
 
 
-# In[72]:
+    # In[72]:
 
 
-MIMast = MIMast_c.copy(deep=True)
-# VBASource = MIMast_c.copy(deep=True)
-DEV = False
+    MIMast = MIMast_c.copy(deep=True)
+    # VBASource = MIMast_c.copy(deep=True)
+    DEV = False
 
 
-# In[73]:
+    # In[73]:
 
 
-####### For Testing & Debug
+    ####### For Testing & Debug
 
-# DEV = True
+    # DEV = True
 
-if DEV:
-    ListCase = IndDiffRes
-#     ListCase = SetIndex
-    MIMast = MIMast.iloc[ListCase].reset_index(drop=False)
+    if DEV:
+        ListCase = IndDiffRes
+    #     ListCase = SetIndex
+        MIMast = MIMast.iloc[ListCase].reset_index(drop=False)
 
 
-# In[74]:
+    # In[74]:
 
 
-MIMast.shape
+    MIMast.shape
 
 
-# In[75]:
+    # In[75]:
 
 
-def Part_0160_Ext23_Extension(MIMast):
-    print('Progress:\t%s' % 'Handle Ext2 & 3 Extension and Extension Composition')
-    ####### If IsNumeric(.Cells(rw, ColID_Ext2days)) And Left(.Cells(rw, ColID_Ext2For), 2) = "11" And (Ext2AppDate > 0 And Ext2AppDate > (T0Date) And Ext2AppDate <= Now()) And (Trim(.Cells(rw, ColID_Ext2type) <> "OTLM")) Then
-    Ext2_ExtDay = pd.to_numeric(MIMast['CM2-Ext2 - Extension Granted (# of days)'].fillna('0').astype('str').str.strip().replace('', '0'), errors='coerce')
-    Ext2_ExtType = MIMast['CM2-Ext2 - Extension Type'].str.upper()
-    Sel = (MIMast['CM2-Ext2 - Extension For'].fillna('').astype(str).str.strip().str[:2] == '11') & CompareDate_VEC(MIMast['TMP-Ext2AppDate'], '>', MIMast['TMP-T0Date']) & CompareDate_VEC(MIMast['TMP-Ext2AppDate'], '<=', MIMast['TMP-MICutOffDate'])
-    Sel = Sel & (Ext2_ExtType.str.contains('OTLM', na=False) == False) & (MIMast['KPI7 Due Date'].isnull())
-    MIMast.loc[Sel, 'TMP-TotalExtDays'] = MIMast.loc[Sel, 'TMP-TotalExtDays'] + Ext2_ExtDay[Sel]
+    def Part_0160_Ext23_Extension(MIMast):
+        print('Progress:\t%s' % 'Handle Ext2 & 3 Extension and Extension Composition')
+        ####### If IsNumeric(.Cells(rw, ColID_Ext2days)) And Left(.Cells(rw, ColID_Ext2For), 2) = "11" And (Ext2AppDate > 0 And Ext2AppDate > (T0Date) And Ext2AppDate <= Now()) And (Trim(.Cells(rw, ColID_Ext2type) <> "OTLM")) Then
+        Ext2_ExtDay = pd.to_numeric(MIMast['CM2-Ext2 - Extension Granted (# of days)'].fillna('0').astype('str').str.strip().replace('', '0'), errors='coerce')
+        Ext2_ExtType = MIMast['CM2-Ext2 - Extension Type'].str.upper()
+        Sel = (MIMast['CM2-Ext2 - Extension For'].fillna('').astype(str).str.strip().str[:2] == '11') & CompareDate_VEC(MIMast['TMP-Ext2AppDate'], '>', MIMast['TMP-T0Date']) & CompareDate_VEC(MIMast['TMP-Ext2AppDate'], '<=', MIMast['TMP-MICutOffDate'])
+        Sel = Sel & (Ext2_ExtType.str.contains('OTLM', na=False) == False) & (MIMast['KPI7 Due Date'].isnull())
+        MIMast.loc[Sel, 'TMP-TotalExtDays'] = MIMast.loc[Sel, 'TMP-TotalExtDays'] + Ext2_ExtDay[Sel]
 
 
 
-#     Sel01 = Sel & Ext1_ExtType.str.contains('OTLM', na=False) & (Ext1_ExtDay > 0)
-#     MIMast.loc[Sel01, 'TMP-StrExtComp'] = MIMast[Sel01]['TMP-StrExtComp'] + "OTLM+"
+    #     Sel01 = Sel & Ext1_ExtType.str.contains('OTLM', na=False) & (Ext1_ExtDay > 0)
+    #     MIMast.loc[Sel01, 'TMP-StrExtComp'] = MIMast[Sel01]['TMP-StrExtComp'] + "OTLM+"
 
-    Sel02 = Sel & Ext2_ExtType.str.contains('FCC', na=False) & (Ext2_ExtDay > 0)
-    MIMast.loc[Sel02, 'TMP-StrExtComp'] = MIMast[Sel02]['TMP-StrExtComp'] + "FCC+"
+        Sel02 = Sel & Ext2_ExtType.str.contains('FCC', na=False) & (Ext2_ExtDay > 0)
+        MIMast.loc[Sel02, 'TMP-StrExtComp'] = MIMast[Sel02]['TMP-StrExtComp'] + "FCC+"
 
-    Sel03 = Sel & Ext2_ExtType.str.contains('Other', na=False) & (Ext2_ExtDay > 0)
-    MIMast.loc[Sel03, 'TMP-StrExtComp'] = MIMast[Sel03]['TMP-StrExtComp'] + "Other+"
+        Sel03 = Sel & Ext2_ExtType.str.contains('Other', na=False) & (Ext2_ExtDay > 0)
+        MIMast.loc[Sel03, 'TMP-StrExtComp'] = MIMast[Sel03]['TMP-StrExtComp'] + "Other+"
 
 
 
-    Ext3_ExtDay = pd.to_numeric(MIMast['CM2-Ext3 - Extension Granted (# of days)'].fillna('0').astype('str').str.strip().replace('', '0'), errors='coerce')
-    Ext3_ExtType = MIMast['CM2-Ext3 - Extension Type'].fillna('').str.upper()
-    Sel = (MIMast['CM2-Ext3 - Extension For'].fillna('').astype(str).str.strip().str[:2] == '11') & CompareDate_VEC(MIMast['TMP-Ext3AppDate'], '>', MIMast['TMP-T0Date']) & CompareDate_VEC(MIMast['TMP-Ext3AppDate'], '<=', MIMast['TMP-MICutOffDate'])
+        Ext3_ExtDay = pd.to_numeric(MIMast['CM2-Ext3 - Extension Granted (# of days)'].fillna('0').astype('str').str.strip().replace('', '0'), errors='coerce')
+        Ext3_ExtType = MIMast['CM2-Ext3 - Extension Type'].fillna('').str.upper()
+        Sel = (MIMast['CM2-Ext3 - Extension For'].fillna('').astype(str).str.strip().str[:2] == '11') & CompareDate_VEC(MIMast['TMP-Ext3AppDate'], '>', MIMast['TMP-T0Date']) & CompareDate_VEC(MIMast['TMP-Ext3AppDate'], '<=', MIMast['TMP-MICutOffDate'])
 
-    Sel = Sel & (Ext3_ExtType.str.contains('OTLM', na=False) == False)& (MIMast['KPI7 Due Date'].isnull())
-    MIMast.loc[Sel, 'TMP-TotalExtDays'] = MIMast.loc[Sel, 'TMP-TotalExtDays'] + Ext3_ExtDay[Sel]
+        Sel = Sel & (Ext3_ExtType.str.contains('OTLM', na=False) == False)& (MIMast['KPI7 Due Date'].isnull())
+        MIMast.loc[Sel, 'TMP-TotalExtDays'] = MIMast.loc[Sel, 'TMP-TotalExtDays'] + Ext3_ExtDay[Sel]
 
 
-    Sel02 = Sel & Ext3_ExtType.str.contains('FCC', na=False) & (Ext3_ExtDay > 0)
-    MIMast.loc[Sel02, 'TMP-StrExtComp'] = MIMast[Sel02]['TMP-StrExtComp'] + "FCC+"
+        Sel02 = Sel & Ext3_ExtType.str.contains('FCC', na=False) & (Ext3_ExtDay > 0)
+        MIMast.loc[Sel02, 'TMP-StrExtComp'] = MIMast[Sel02]['TMP-StrExtComp'] + "FCC+"
 
-    Sel03 = Sel & Ext3_ExtType.str.contains('Other', na=False) & (Ext3_ExtDay > 0)
-    MIMast.loc[Sel03, 'TMP-StrExtComp'] = MIMast[Sel03]['TMP-StrExtComp'] + "Other+"
+        Sel03 = Sel & Ext3_ExtType.str.contains('Other', na=False) & (Ext3_ExtDay > 0)
+        MIMast.loc[Sel03, 'TMP-StrExtComp'] = MIMast[Sel03]['TMP-StrExtComp'] + "Other+"
 
 
 
-    tmpCol = MIMast.columns.tolist()
+        tmpCol = MIMast.columns.tolist()
 
 
 
-    MIMast['TMP-ExtCuttOffDate'] = DT.datetime(2018, 10, 1, 0, 0)
-    Sel = CompareDate_VEC(MIMast['TMP-T0Date'], '>', MIMast['TMP-ExtCuttOffDate']) & (MIMast['TMP-TotalExtDays'] > 120)& (MIMast['KPI7 Due Date'].isnull())
-    MIMast.loc[Sel, 'TMP-TotalExtDays'] = 120
+        MIMast['TMP-ExtCuttOffDate'] = DT.datetime(2018, 10, 1, 0, 0)
+        Sel = CompareDate_VEC(MIMast['TMP-T0Date'], '>', MIMast['TMP-ExtCuttOffDate']) & (MIMast['TMP-TotalExtDays'] > 120)& (MIMast['KPI7 Due Date'].isnull())
+        MIMast.loc[Sel, 'TMP-TotalExtDays'] = 120
 
 
 
-    MIMast['TMP-ExtCuttOffDate'] = DT.datetime(2018, 12, 14, 0, 0)
+        MIMast['TMP-ExtCuttOffDate'] = DT.datetime(2018, 12, 14, 0, 0)
 
-    Sel = MIMast['TMP-T90AllDocReceived'] & (MIMast['TMP-TotalExtDays'] == 0) & CompareDate_VEC(MIMast['TMP-OriginalDueDate'], '>=', MIMast['TMP-ExtCuttOffDate']) & CompareDate_VEC(MIMast['TMP-MICutOffDate'], '>=', MIMast['TMP-OriginalDueDate'] - DT.timedelta(days=15))& (MIMast['KPI7 Due Date'].isnull())
+        Sel = MIMast['TMP-T90AllDocReceived'] & (MIMast['TMP-TotalExtDays'] == 0) & CompareDate_VEC(MIMast['TMP-OriginalDueDate'], '>=', MIMast['TMP-ExtCuttOffDate']) & CompareDate_VEC(MIMast['TMP-MICutOffDate'], '>=', MIMast['TMP-OriginalDueDate'] - DT.timedelta(days=15))& (MIMast['KPI7 Due Date'].isnull())
 
-    MIMast.loc[Sel, 'TMP-TotalExtDays'] = MIMast[Sel]['TMP-TotalExtDays'] + 30
-    MIMast.loc[Sel, 'TMP-StrExtComp'] = 'All Doc Received'
+        MIMast.loc[Sel, 'TMP-TotalExtDays'] = MIMast[Sel]['TMP-TotalExtDays'] + 30
+        MIMast.loc[Sel, 'TMP-StrExtComp'] = 'All Doc Received'
 
 
-    MIMast['TMP-ExtendedDueDate'] = MIMast['TMP-OriginalDueDate'] + pd.to_timedelta(MIMast['TMP-TotalExtDays'], unit='D')
+        MIMast['TMP-ExtendedDueDate'] = MIMast['TMP-OriginalDueDate'] + pd.to_timedelta(MIMast['TMP-TotalExtDays'], unit='D')
 
 
 
-    Sel = CompareDate_VEC(MIMast['TMP-BulkExtDate'], '>', MIMast['TMP-T0Date'])& (MIMast['KPI7 Due Date'].isnull())
+        Sel = CompareDate_VEC(MIMast['TMP-BulkExtDate'], '>', MIMast['TMP-T0Date'])& (MIMast['KPI7 Due Date'].isnull())
 
-    tmpMaxDate = MIMast[['TMP-BulkExtDate', 'TMP-ExtendedDueDate']].fillna(DummyDate).max(axis=1).replace(DummyDate, pd.NaT)
+        tmpMaxDate = MIMast[['TMP-BulkExtDate', 'TMP-ExtendedDueDate']].fillna(DummyDate).max(axis=1).replace(DummyDate, pd.NaT)
 
-    MIMast.loc[Sel, 'TMP-ExtendedDueDate'] = tmpMaxDate[Sel]
-    MIMast.loc[Sel, 'TMP-StrExtComp'] = MIMast[Sel]['TMP-StrExtComp'] + "Bulk+"
-    Sel01 = MIMast['TMP-T0Date'].notnull() & CompareDate_VEC(MIMast['TMP-BulkExtDate'], '>', MIMast['TMP-T0Date'].fillna(DummyDate)  + pd.to_timedelta(MIMast['TMP-TotalExtDays'], unit='D'))
+        MIMast.loc[Sel, 'TMP-ExtendedDueDate'] = tmpMaxDate[Sel]
+        MIMast.loc[Sel, 'TMP-StrExtComp'] = MIMast[Sel]['TMP-StrExtComp'] + "Bulk+"
+        Sel01 = MIMast['TMP-T0Date'].notnull() & CompareDate_VEC(MIMast['TMP-BulkExtDate'], '>', MIMast['TMP-T0Date'].fillna(DummyDate)  + pd.to_timedelta(MIMast['TMP-TotalExtDays'], unit='D'))
 
-    Sel = Sel & Sel01
-    MIMast.loc[Sel, 'TMP-TotalExtDays'] = (MIMast['TMP-BulkExtDate'] - MIMast['TMP-T0Date']).dt.days[Sel]
+        Sel = Sel & Sel01
+        MIMast.loc[Sel, 'TMP-TotalExtDays'] = (MIMast['TMP-BulkExtDate'] - MIMast['TMP-T0Date']).dt.days[Sel]
 
-    ####### .Cells(rw, ColID_ExtComp) = StrExtComp
+        ####### .Cells(rw, ColID_ExtComp) = StrExtComp
 
-    MIMast['Extension Composition'] = MIMast['TMP-StrExtComp']
-    MIMast['Total Extension Days'] = MIMast['TMP-TotalExtDays']
+        MIMast['Extension Composition'] = MIMast['TMP-StrExtComp']
+        MIMast['Total Extension Days'] = MIMast['TMP-TotalExtDays']
 
-    print('Done')
-    return MIMast[tmpCol]
+        print('Done')
+        return MIMast[tmpCol]
 
 
-# In[76]:
+    # In[76]:
 
 
-# get_ipython().run_cell_magic('time', '', "\n\nMIMast = UpdateMasterStatus(MIMast)\nif not DEV:\n    MIMast_Result = MIMast.copy(deep=True)\n\nMIMast_Result['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']\nMIMast['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']\n")
-MIMast = UpdateMasterStatus(MIMast)
-if not DEV:
-    MIMast_Result = MIMast.copy(deep=True)
-MIMast_Result['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']
-MIMast['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']
+    # get_ipython().run_cell_magic('time', '', "\n\nMIMast = UpdateMasterStatus(MIMast)\nif not DEV:\n    MIMast_Result = MIMast.copy(deep=True)\n\nMIMast_Result['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']\nMIMast['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']\n")
+    MIMast = UpdateMasterStatus(MIMast)
+    if not DEV:
+        MIMast_Result = MIMast.copy(deep=True)
+    MIMast_Result['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']
+    MIMast['KPI7 Due Date']  = MIMast_c['KPI7 Due Date']
 
 
-# In[77]:
+    # In[77]:
 
 
-if DEV:
-    print(MIMast[['Customer ID', 'T0', 'Escalation Aging Days', 'QVEsc-Escalation Status', 'QVEsc-Raised date']])
+    if DEV:
+        print(MIMast[['Customer ID', 'T0', 'Escalation Aging Days', 'QVEsc-Escalation Status', 'QVEsc-Raised date']])
 
 
-# In[78]:
+    # In[78]:
 
 
-# %%time
-# if DEV:
-#     MIMast.to_excel('MI_Result_Frag.xlsx')
-# else:
-#     MIMast.to_excel('MI_Result.xlsx')
+    # %%time
+    # if DEV:
+    #     MIMast.to_excel('MI_Result_Frag.xlsx')
+    # else:
+    #     MIMast.to_excel('MI_Result.xlsx')
 
 
-# In[79]:
+    # In[79]:
 
 
-# %%time
-# if DEV:
-#     MIMast_Result.to_excel('MI_Result.xlsx')
+    # %%time
+    # if DEV:
+    #     MIMast_Result.to_excel('MI_Result.xlsx')
 
 
-# In[80]:
+    # In[80]:
 
 
-Sel_kpi = MIMast['KPI7 Due Date'].isnull()
-Sel_et1 = (MIMast['Event Trigger']==1)
-Sel_et2 = (MIMast['Event Trigger']==2)
-Sel_SRC = (MIMast['Original Due Date Src']=='ET T60')
-Sel_T0 = (MIMast['T0']>= DT.datetime(2023, 6, 1, 0, 0))
-sel = (~Sel_kpi | Sel_et1 | Sel_et2) & Sel_SRC & Sel_T0
+    Sel_kpi = MIMast['KPI7 Due Date'].isnull()
+    Sel_et1 = (MIMast['Event Trigger']==1)
+    Sel_et2 = (MIMast['Event Trigger']==2)
+    Sel_SRC = (MIMast['Original Due Date Src']=='ET T60')
+    Sel_T0 = (MIMast['T0']>= DT.datetime(2023, 6, 1, 0, 0))
+    sel = (~Sel_kpi | Sel_et1 | Sel_et2) & Sel_SRC & Sel_T0
 
 
-#FCR T90
-SEL_90 = MIMast['T0'] + DT.timedelta(days=90)> FCRCutoffDateMst
-SEL_fcr =  (MIMast['Overdue (FCR)']== True)
-MIMast.loc[sel&SEL_90&SEL_fcr, ['Overdue (FCR)','Overdue (FCR) - Remarks']] =  [False,'104-Within ET T90']
+    #FCR T90
+    SEL_90 = MIMast['T0'] + DT.timedelta(days=90)> FCRCutoffDateMst
+    SEL_fcr =  (MIMast['Overdue (FCR)']== True)
+    MIMast.loc[sel&SEL_90&SEL_fcr, ['Overdue (FCR)','Overdue (FCR) - Remarks']] =  [False,'104-Within ET T90']
 
-tmpDate = FCRCutoffDateMst + DT.timedelta(days=32)
-FCRCutoffDateNextMth =  DT.datetime(tmpDate.year, tmpDate.month, 1, 0, 0) - DT.timedelta(days=1)
+    tmpDate = FCRCutoffDateMst + DT.timedelta(days=32)
+    FCRCutoffDateNextMth =  DT.datetime(tmpDate.year, tmpDate.month, 1, 0, 0) - DT.timedelta(days=1)
 
-SEL_90_NEXT = MIMast['T0'] + DT.timedelta(days=90)> FCRCutoffDateNextMth
-SEL_fcr_NEXT =  (MIMast['Overdue (FCR) (Next Month)']== True)
-MIMast.loc[sel&SEL_90_NEXT&SEL_fcr_NEXT, ['Overdue (FCR) (Next Month)','Overdue (FCR) - Remarks (Next Month)']] =  [False,'104-Within ET T90']
+    SEL_90_NEXT = MIMast['T0'] + DT.timedelta(days=90)> FCRCutoffDateNextMth
+    SEL_fcr_NEXT =  (MIMast['Overdue (FCR) (Next Month)']== True)
+    MIMast.loc[sel&SEL_90_NEXT&SEL_fcr_NEXT, ['Overdue (FCR) (Next Month)','Overdue (FCR) - Remarks (Next Month)']] =  [False,'104-Within ET T90']
 
 
-# In[81]:
+    # In[81]:
 
 
-#Letter arrangement
-sel_letter =  (MIMast['Letter Arrangement']=='T60')
-MIMast.loc[sel&sel_letter, ['Letter Arrangement']] =  ['T30']
+    #Letter arrangement
+    sel_letter =  (MIMast['Letter Arrangement']=='T60')
+    MIMast.loc[sel&sel_letter, ['Letter Arrangement']] =  ['T30']
 
 
-# In[82]:
+    # In[82]:
 
 
-MIMast.loc[:, ['Overdue (FCR)']].drop_duplicates()
+    MIMast.loc[:, ['Overdue (FCR)']].drop_duplicates()
 
 
-# ## Export Result
+    # ## Export Result
 
-# In[83]:
+    # In[83]:
 
 
-# ExportCol[57] = 'Master-QC CM Name'
-# ExportCol[58] = 'Master-QC CM Team Head'
+    # ExportCol[57] = 'Master-QC CM Name'
+    # ExportCol[58] = 'Master-QC CM Team Head'
 
 
-# In[84]:
+    # In[84]:
 
 
-Sel = MIMast['Master-CM Team Head'] == 'CHERRY H Y MAK'
-MIMast.loc[Sel, 'Master-CM Team Head'] = 'Ken Y K FONG'
+    Sel = MIMast['Master-CM Team Head'] == 'CHERRY H Y MAK'
+    MIMast.loc[Sel, 'Master-CM Team Head'] = 'Ken Y K FONG'
 
-Sel = MIMast['Master-QC CM Team Head'] == 'CHERRY H Y MAK'
-MIMast.loc[Sel, 'Master-QC CM Team Head'] = 'Ken Y K FONG'
+    Sel = MIMast['Master-QC CM Team Head'] == 'CHERRY H Y MAK'
+    MIMast.loc[Sel, 'Master-QC CM Team Head'] = 'Ken Y K FONG'
 
-Sel = MIMast['Master-CM Team Head'] == 'Zi Jin Chan'
-MIMast.loc[Sel, 'Master-CM Team Head'] = 'Ken Y K FONG'
+    Sel = MIMast['Master-CM Team Head'] == 'Zi Jin Chan'
+    MIMast.loc[Sel, 'Master-CM Team Head'] = 'Ken Y K FONG'
 
-Sel = MIMast['Master-QC CM Team Head'] == 'Zi Jin Chan'
-MIMast.loc[Sel, 'Master-QC CM Team Head'] = 'Ken Y K FONG'
+    Sel = MIMast['Master-QC CM Team Head'] == 'Zi Jin Chan'
+    MIMast.loc[Sel, 'Master-QC CM Team Head'] = 'Ken Y K FONG'
 
 
-# In[85]:
+    # In[85]:
 
 
-# get_ipython().run_cell_magic('time', '', "Debug = False\nResultCol = ['Customer ID', 'CIN'] + MSExcelForCol + ExportCol.dropna().tolist()\n# print(ResultCol)\nif Debug:\n    AllColumns = MIMast.columns\n    Sel = AllColumns.str.startswith('TMP-', na=False)\n#     print(AllColumns.str.startswith('TMP-', na=False))\n    ResultCol = MSExcelForCol + ResultCol + AllColumns[Sel].tolist()\nMIMast_FullResult = MIMast[ResultCol]\n\nExportCol_Result = pd.DataFrame({'Imported Columns' : ResultCol[2:]})\n\nwriter = pd.ExcelWriter('MIResult_' + MICutOffDate.strftime('%Y-%m-%d') + '_New.xlsx')\nMIMast_FullResult.to_excel(writer,'Master MI')\nExportCol_Result.to_excel(writer,'Imported Columns', index=False)\nDateDF_Out.to_excel(writer,'Date Variables', index=False)\n\nwriter.save()\n")
+    # get_ipython().run_cell_magic('time', '', "Debug = False\nResultCol = ['Customer ID', 'CIN'] + MSExcelForCol + ExportCol.dropna().tolist()\n# print(ResultCol)\nif Debug:\n    AllColumns = MIMast.columns\n    Sel = AllColumns.str.startswith('TMP-', na=False)\n#     print(AllColumns.str.startswith('TMP-', na=False))\n    ResultCol = MSExcelForCol + ResultCol + AllColumns[Sel].tolist()\nMIMast_FullResult = MIMast[ResultCol]\n\nExportCol_Result = pd.DataFrame({'Imported Columns' : ResultCol[2:]})\n\nwriter = pd.ExcelWriter('MIResult_' + MICutOffDate.strftime('%Y-%m-%d') + '_New.xlsx')\nMIMast_FullResult.to_excel(writer,'Master MI')\nExportCol_Result.to_excel(writer,'Imported Columns', index=False)\nDateDF_Out.to_excel(writer,'Date Variables', index=False)\n\nwriter.save()\n")
 
-Debug = False
-ResultCol = ['Customer ID', 'CIN'] + MSExcelForCol + ExportCol.dropna().tolist()
-# print(ResultCol)
-if Debug:
-    AllColumns = MIMast.columns
-    Sel = AllColumns.str.startswith('TMP-', na=False)
-#     print(AllColumns.str.startswith('TMP-', na=False))
-    ResultCol = MSExcelForCol + ResultCol + AllColumns[Sel].tolist()
-MIMast_FullResult = MIMast[ResultCol]
-ExportCol_Result = pd.DataFrame({'Imported Columns' : ResultCol[2:]})
-writer = pd.ExcelWriter('MIResult_' + MICutOffDate.strftime('%Y-%m-%d') + '_New.xlsx')
-MIMast_FullResult.to_excel(writer,'Master MI')
-ExportCol_Result.to_excel(writer,'Imported Columns', index=False)
-DateDF_Out.to_excel(writer,'Date Variables', index=False)
-writer.save()
+    Debug = False
+    ResultCol = ['Customer ID', 'CIN'] + MSExcelForCol + ExportCol.dropna().tolist()
+    # print(ResultCol)
+    if Debug:
+        AllColumns = MIMast.columns
+        Sel = AllColumns.str.startswith('TMP-', na=False)
+    #     print(AllColumns.str.startswith('TMP-', na=False))
+        ResultCol = MSExcelForCol + ResultCol + AllColumns[Sel].tolist()
+    MIMast_FullResult = MIMast[ResultCol]
+    ExportCol_Result = pd.DataFrame({'Imported Columns' : ResultCol[2:]})
+    writer = pd.ExcelWriter('MIResult_' + MICutOffDate.strftime('%Y-%m-%d') + '_New.xlsx')
+    MIMast_FullResult.to_excel(writer,'Master MI')
+    ExportCol_Result.to_excel(writer,'Imported Columns', index=False)
+    DateDF_Out.to_excel(writer,'Date Variables', index=False)
+    writer.save()
 
-# In[ ]:
+    # In[ ]:
 
 
 
 
 
-# <a id='update_MI'></a>
+    # <a id='update_MI'></a>
 
-# Please click "Run All Above" after selecting this Cell.
+    # Please click "Run All Above" after selecting this Cell.
 
-# ## Function for ErrorChecking & Debug Code
+    # ## Function for ErrorChecking & Debug Code
 
-# In[ ]:
+    # In[ ]:
 
 
-def Debug_ErrorSummary(VBA_MI, Python_MI, ReqCol):
+    def Debug_ErrorSummary(VBA_MI, Python_MI, ReqCol):
 
-    Ck_Col_VBA = ReqCol[0]
-    Ck_Col_Py = ReqCol[1]
+        Ck_Col_VBA = ReqCol[0]
+        Ck_Col_Py = ReqCol[1]
 
-    FullColVBA = ['Customer ID', 'Segment'] + [Ck_Col_VBA]
-    FullColPy = ['Customer ID', 'Segment'] + [Ck_Col_Py]
+        FullColVBA = ['Customer ID', 'Segment'] + [Ck_Col_VBA]
+        FullColPy = ['Customer ID', 'Segment'] + [Ck_Col_Py]
 
-    VBA_Result = VBA_MI[FullColVBA]
-    PythonResult = Python_MI[FullColPy]
-    DataType = str(VBA_Result[Ck_Col_VBA].dtypes)
+        VBA_Result = VBA_MI[FullColVBA]
+        PythonResult = Python_MI[FullColPy]
+        DataType = str(VBA_Result[Ck_Col_VBA].dtypes)
 
-#     print(VBA_Result.dtypes)
-#     print(PythonResult.dtypes)
-#     print(DataType)
-    if ('float' in DataType) | ('int' in DataType):
-        VBA_Result[Ck_Col_VBA] = VBA_Result[Ck_Col_VBA].fillna(0).replace('', 0).astype('int64')
-        PythonResult[Ck_Col_Py] = PythonResult[Ck_Col_Py].fillna(0).replace('', 0).astype('int64')
-    elif 'datetime' in DataType:
-        VBA_Result[Ck_Col_VBA] = VBA_Result[Ck_Col_VBA].dt.strftime('%Y-%m-%d')
-        PythonResult[Ck_Col_Py] = PythonResult[Ck_Col_Py].dt.strftime('%Y-%m-%d')
-    else:
-        VBA_Result[Ck_Col_VBA] = VBA_Result[Ck_Col_VBA].fillna('').astype(str).str.strip().str.upper()
-        PythonResult[Ck_Col_Py] = PythonResult[Ck_Col_Py].fillna('').astype(str).str.strip().str.upper()
-#     print(VBA_Result.dtypes)
+    #     print(VBA_Result.dtypes)
+    #     print(PythonResult.dtypes)
+    #     print(DataType)
+        if ('float' in DataType) | ('int' in DataType):
+            VBA_Result[Ck_Col_VBA] = VBA_Result[Ck_Col_VBA].fillna(0).replace('', 0).astype('int64')
+            PythonResult[Ck_Col_Py] = PythonResult[Ck_Col_Py].fillna(0).replace('', 0).astype('int64')
+        elif 'datetime' in DataType:
+            VBA_Result[Ck_Col_VBA] = VBA_Result[Ck_Col_VBA].dt.strftime('%Y-%m-%d')
+            PythonResult[Ck_Col_Py] = PythonResult[Ck_Col_Py].dt.strftime('%Y-%m-%d')
+        else:
+            VBA_Result[Ck_Col_VBA] = VBA_Result[Ck_Col_VBA].fillna('').astype(str).str.strip().str.upper()
+            PythonResult[Ck_Col_Py] = PythonResult[Ck_Col_Py].fillna('').astype(str).str.strip().str.upper()
+    #     print(VBA_Result.dtypes)
 
-    SelDiffResult = ((VBA_Result[Ck_Col_VBA] != PythonResult[Ck_Col_Py]) & (VBA_Result['Segment'] != 'BBPM'))
-#     print((VBA_Result[Ck_Col_VBA] != PythonResult[Ck_Col_Py]))
-    DiffResult = pd.DataFrame(columns=['Customer ID', 'Segment', 'VBA Result', 'Python Result'])
-    DiffResult['Customer ID'] = VBA_Result['Customer ID']
-    DiffResult['Segment'] = VBA_Result['Segment']
-    DiffResult['VBA Result'] = VBA_Result[Ck_Col_VBA]
-    DiffResult['Python Result'] = PythonResult[Ck_Col_Py]
-    DiffResult['Check Result'] = DiffResult['VBA Result'].astype(str) + ' - ' + DiffResult['Python Result'].astype(str)
-    DiffResult = DiffResult[SelDiffResult]
+        SelDiffResult = ((VBA_Result[Ck_Col_VBA] != PythonResult[Ck_Col_Py]) & (VBA_Result['Segment'] != 'BBPM'))
+    #     print((VBA_Result[Ck_Col_VBA] != PythonResult[Ck_Col_Py]))
+        DiffResult = pd.DataFrame(columns=['Customer ID', 'Segment', 'VBA Result', 'Python Result'])
+        DiffResult['Customer ID'] = VBA_Result['Customer ID']
+        DiffResult['Segment'] = VBA_Result['Segment']
+        DiffResult['VBA Result'] = VBA_Result[Ck_Col_VBA]
+        DiffResult['Python Result'] = PythonResult[Ck_Col_Py]
+        DiffResult['Check Result'] = DiffResult['VBA Result'].astype(str) + ' - ' + DiffResult['Python Result'].astype(str)
+        DiffResult = DiffResult[SelDiffResult]
 
-    return DiffResult
+        return DiffResult
 
-def Debug_ListErrorValue(DiffResult):
-#     print(DiffResult['Check Result'].value_counts())
-    return DiffResult['Check Result'].value_counts()
+    def Debug_ListErrorValue(DiffResult):
+    #     print(DiffResult['Check Result'].value_counts())
+        return DiffResult['Check Result'].value_counts()
 
-def GetIndex(DiffResult, SelOpt, ListLen=5):
+    def GetIndex(DiffResult, SelOpt, ListLen=5):
 
-    Sel = DiffResult['Check Result'] == SelOpt
-    CustomerID = DiffResult[Sel]["Customer ID"]
-    IndexPy = DiffResult[Sel].index
-    IndexVBA = IndexPy + 2
-    return IndexPy, IndexVBA[:ListLen], CustomerID
+        Sel = DiffResult['Check Result'] == SelOpt
+        CustomerID = DiffResult[Sel]["Customer ID"]
+        IndexPy = DiffResult[Sel].index
+        IndexVBA = IndexPy + 2
+        return IndexPy, IndexVBA[:ListLen], CustomerID
 
 
-# In[ ]:
+    # In[ ]:
 
 
 
 
 
-# In[ ]:
+    # In[ ]:
 
 
 
 
 
-# ## Checking and Debug (No need to Run)
+    # ## Checking and Debug (No need to Run)
 
-# In[ ]:
+    # In[ ]:
 
 
-# MIMast = MIMast_Result.copy(deep=True)
+    # MIMast = MIMast_Result.copy(deep=True)
 
-# DEV = True
+    # DEV = True
 
-# if DEV:
-#     ListCase = IndDiffRes[:4]
-# #     ListCase = SetIndex
-#     MIMast = MIMast.iloc[ListCase].reset_index(drop=False)
+    # if DEV:
+    #     ListCase = IndDiffRes[:4]
+    # #     ListCase = SetIndex
+    #     MIMast = MIMast.iloc[ListCase].reset_index(drop=False)
 
 
-# In[ ]:
+    # In[ ]:
 
 
-# tmpResult = MIExclFormula(MIMast)
+    # tmpResult = MIExclFormula(MIMast)
 
 
-# In[ ]:
+    # In[ ]:
 
 
-# tmpResult['Aging Days (Pending CM)']
+    # tmpResult['Aging Days (Pending CM)']
 
 
-# In[ ]:
+    # In[ ]:
 
 
-# get_ipython().run_cell_magic('time', '', "VBA_Code_DF = pd.read_excel('GS CDD FullList Master template Full - 2021-03-23_VBA Result.xlsx')\n\nVBASource = VBA_Code_DF.copy(deep=True)\n")
+    # get_ipython().run_cell_magic('time', '', "VBA_Code_DF = pd.read_excel('GS CDD FullList Master template Full - 2021-03-23_VBA Result.xlsx')\n\nVBASource = VBA_Code_DF.copy(deep=True)\n")
 
-VBA_Code_DF = pd.read_excel('GS CDD FullList Master template Full - 2021-03-23_VBA Result.xlsx')
-VBASource = VBA_Code_DF.copy(deep=True)
+    VBA_Code_DF = pd.read_excel('GS CDD FullList Master template Full - 2021-03-23_VBA Result.xlsx')
+    VBASource = VBA_Code_DF.copy(deep=True)
 
 
-# In[ ]:
+    # In[ ]:
 
 
-ResultCol = ''
-ResultCol = MSExcelForCol + ExportCol.dropna().tolist()
-CheckCol = ResultCol
-# CheckCol = ExportCol.dropna().tolist()
+    ResultCol = ''
+    ResultCol = MSExcelForCol + ExportCol.dropna().tolist()
+    CheckCol = ResultCol
+    # CheckCol = ExportCol.dropna().tolist()
 
-CheckCol.remove('Segment')
-for aCol in CheckCol:
-    print('**************')
-    print(aCol)
-    ReqCol = (aCol, aCol)
-#     aDiff = Debug_ErrorSummary(MIMast_c, MIMast_Result, ReqCol)
+    CheckCol.remove('Segment')
+    for aCol in CheckCol:
+        print('**************')
+        print(aCol)
+        ReqCol = (aCol, aCol)
+    #     aDiff = Debug_ErrorSummary(MIMast_c, MIMast_Result, ReqCol)
+        aDiff = Debug_ErrorSummary(VBASource, MIMast_Result, ReqCol)
+        DiffAna = Debug_ListErrorValue(aDiff)
+        print(DiffAna)
+        print('**************')
+
+
+    # ## Detail Debug
+
+    # In[ ]:
+
+
+    VBASource['Master-CM Name'] = VBASource['Master-CM Namee'].astype('int64')
+    MIMast_Result['Stage Aging Date'] = MIMast_Result['Stage Aging Date'].fillna(0).astype('int64')
+
+
+    # In[ ]:
+
+
+    ReqCol = ('Letter Arrangement', 'Letter Arrangement')
+    # ReqCol = ('RMTH OTLM Input Date', 'RMTH OTLM Input Date')
     aDiff = Debug_ErrorSummary(VBASource, MIMast_Result, ReqCol)
     DiffAna = Debug_ListErrorValue(aDiff)
-    print(DiffAna)
-    print('**************')
+    DiffAna
 
 
-# ## Detail Debug
+    # In[ ]:
 
-# In[ ]:
 
-
-VBASource['Master-CM Name'] = VBASource['Master-CM Namee'].astype('int64')
-MIMast_Result['Stage Aging Date'] = MIMast_Result['Stage Aging Date'].fillna(0).astype('int64')
-
-
-# In[ ]:
-
-
-ReqCol = ('Letter Arrangement', 'Letter Arrangement')
-# ReqCol = ('RMTH OTLM Input Date', 'RMTH OTLM Input Date')
-aDiff = Debug_ErrorSummary(VBASource, MIMast_Result, ReqCol)
-DiffAna = Debug_ListErrorValue(aDiff)
-DiffAna
-
-
-# In[ ]:
-
-
-ReqCol = ('Escalation Aging Days', 'Escalation Aging Days')
-# ReqCol = ('RMTH OTLM Input Date', 'RMTH OTLM Input Date')
-aDiff = Debug_ErrorSummary(VBASource, MIMast_Result, ReqCol)
-DiffAna = Debug_ListErrorValue(aDiff)
-DiffAna
-
-
-# In[ ]:
-
-
-# IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, '44 - 0')
-IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[2])
-print(IndDiffRes)
-print(IndDiffRes_VBA)
-
-
-# In[ ]:
-
-
-for i in range(DiffAna.shape[0]):
-    IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[i])
-    print(VBASource.loc[IndDiffRes, ['Customer ID', 'T0', 'QVEsc-Escalation Status', 'QVEsc-Raised date']])
-
-
-# In[ ]:
-
-
-CustomerID.tolist()[:4]
-
-
-# In[ ]:
-
-
-VBASource.loc[IndDiffRes]['T0'].value_counts()
-
-
-# In[ ]:
-
-
-MIMast_Result.loc[IndDiffRes]['QVOpen-Days since last Action'].value_counts()
-
-
-# In[ ]:
-
-
-VBASource.columns[VBASource.columns.str.contains('QVOpen')]
-
-
-# In[ ]:
-
-
-MIMast_Result.loc[IndDiffRes[:4]][['Customer ID', 'T0', 'QVEsc-Escalation Status', 'QVEsc-Raised date']]#.value_counts()
-
-
-# In[ ]:
-
-
-VBASource.loc[IndDiffRes][['Customer ID', 'T0', 'Master-CM Name', 'Master-CM Team Head', 'CM2-CM Name', 'CM2-CM Team Head', 'T0 CM Name', 'T0 CM Team Head', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-Latest DC Finalised Date', 'Master Status L2', 'Master Status - CalCode']]#.value_counts()
-
-
-# In[ ]:
-
-
-MIMast_Result.loc[IndDiffRes][['Customer ID', 'T0', 'Master-CM Name', 'Master-CM Team Head', 'CM2-CM Name', 'CM2-CM Team Head', 'T0 CM Name', 'T0 CM Team Head', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-Latest DC Finalised Date', 'Master Status L2', 'Master Status - CalCode']]#.value_counts()
-
-
-# In[ ]:
-
-
-MIMast_c.loc[IndDiffRes][['Customer ID', 'T0', 'Master-CM Name', 'Master-CM Team Head', 'CM2-CM Name', 'CM2-CM Team Head', 'T0 CM Name', 'T0 CM Team Head', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-Days since last Action', 'Master Status L2', 'Master Status - CalCode']]#.value_counts()
-
-
-# In[ ]:
-
-
-aList = pd.Series(MIMast_c['CM2-CM Name'].value_counts().index.tolist()).fillna('0').str.upper()
-
-
-# In[ ]:
-
-
-aCMTHList = GetCMTeamHeadforCM(aList)
-
-
-# In[ ]:
-
-
-aList[aCMTHList.isnull()].value_counts()
-
-
-# In[ ]:
-
-
-MIMast_Result[MIMast_Result['CM2-CM Team Head'].str.contains('Ruby', na=False)]['CM2-CM Name'].value_counts()
-
-
-# In[ ]:
-
-
-for i in range(DiffAna.shape[0]):
-    IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[i])
-    print('*******')
-    print(i)
-
-    print(VBASource.loc[IndDiffRes, 'Master Status L2'].value_counts())
-
-    print(MIMast_Result.loc[IndDiffRes, 'Master Status L2'].value_counts())
-#     print(MIMast_Result.loc[IndDiffRes]['QVOpen-Latest DC Finalised by ID'])
-
-
-# In[ ]:
-
-
-for i in range(DiffAna.shape[0]):
-    IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[i])
-    print('*******')
-    print(i)
-    print('-------')
-    print(VBASource.loc[IndDiffRes, ['Customer ID', 'Master-CM Team Head', 'T0', 'T0 CM Name', 'CM2-CM Name', 'QVOpen-Latest DC Finalised by ID', 'Master Status L2']])
-    print('-------')
-    print(MIMast_Result.loc[IndDiffRes, ['Master-CM Team Head', 'T0', 'T0 CM Name', 'CM2-CM Name', 'QVOpen-Latest DC Finalised by ID', 'Master Status L2']])
-#     print(MIMast_Result.loc[IndDiffRes]['QVOpen-Latest DC Finalised by ID'])
-
-
-# In[ ]:
-
-
-IndDiffRes = IndDiffRes[:4]
-
-
-# In[ ]:
-
-
-CustomerID.tolist()[:4]
-
-
-# In[ ]:
-
-
-VBASource['T0'][IndDiffRes].value_counts()
-
-
-# In[ ]:
-
-
-MIMast_Result['T0'][IndDiffRes].value_counts()
-
-
-# In[ ]:
-
-
-VBASource.loc[IndDiffRes][['Customer ID', 'T0', 'Segment', 'QVOpen-Review Reason', 'QVOpen-Initiated Date', 'KPI7 Due Date']]
-
-
-# In[ ]:
-
-
-MIMast_Result.loc[IndDiffRes][['Customer ID', 'T0', 'QVOpen-Review Reason', 'QVOpen-Initiated Date', 'KPI7 Due Date']]
-
-
-# In[ ]:
-
-
-Col2Check = ['RMTH OTLM Date', 'RMTH OTLM Input Date', 'T90 All Doc Received Date', 'T90 All Doc Received Input Date']
-
-for aCol in Col2Check:
-    ReqCol = (aCol, aCol)
+    ReqCol = ('Escalation Aging Days', 'Escalation Aging Days')
     # ReqCol = ('RMTH OTLM Input Date', 'RMTH OTLM Input Date')
-    aDiff = Debug_ErrorSummary(MIMast_c, MIMast_Result, ReqCol)
+    aDiff = Debug_ErrorSummary(VBASource, MIMast_Result, ReqCol)
     DiffAna = Debug_ListErrorValue(aDiff)
     DiffAna
-    print('Column:\t%s' % aCol)
-    for i in range(0, aDiff.shape[0]):
-        IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[0])
-        Sel = (MIMast_c.loc[IndDiffRes]['Extended Due Date'] != MIMast_Result.loc[IndDiffRes]['Extended Due Date'])
-        TTL_Error = np.sum(Sel)
-        if TTL_Error > 0:
-            print(ReqCol)
 
 
-# # End of Code
+    # In[ ]:
 
-# In[ ]:
+
+    # IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, '44 - 0')
+    IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[2])
+    print(IndDiffRes)
+    print(IndDiffRes_VBA)
+
+
+    # In[ ]:
+
+
+    for i in range(DiffAna.shape[0]):
+        IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[i])
+        print(VBASource.loc[IndDiffRes, ['Customer ID', 'T0', 'QVEsc-Escalation Status', 'QVEsc-Raised date']])
+
+
+    # In[ ]:
+
+
+    CustomerID.tolist()[:4]
+
+
+    # In[ ]:
+
+
+    VBASource.loc[IndDiffRes]['T0'].value_counts()
+
+
+    # In[ ]:
+
+
+    MIMast_Result.loc[IndDiffRes]['QVOpen-Days since last Action'].value_counts()
+
+
+    # In[ ]:
+
+
+    VBASource.columns[VBASource.columns.str.contains('QVOpen')]
+
+
+    # In[ ]:
+
+
+    MIMast_Result.loc[IndDiffRes[:4]][['Customer ID', 'T0', 'QVEsc-Escalation Status', 'QVEsc-Raised date']]#.value_counts()
+
+
+    # In[ ]:
+
+
+    VBASource.loc[IndDiffRes][['Customer ID', 'T0', 'Master-CM Name', 'Master-CM Team Head', 'CM2-CM Name', 'CM2-CM Team Head', 'T0 CM Name', 'T0 CM Team Head', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-Latest DC Finalised Date', 'Master Status L2', 'Master Status - CalCode']]#.value_counts()
+
+
+    # In[ ]:
+
+
+    MIMast_Result.loc[IndDiffRes][['Customer ID', 'T0', 'Master-CM Name', 'Master-CM Team Head', 'CM2-CM Name', 'CM2-CM Team Head', 'T0 CM Name', 'T0 CM Team Head', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-Latest DC Finalised Date', 'Master Status L2', 'Master Status - CalCode']]#.value_counts()
+
+
+    # In[ ]:
+
+
+    MIMast_c.loc[IndDiffRes][['Customer ID', 'T0', 'Master-CM Name', 'Master-CM Team Head', 'CM2-CM Name', 'CM2-CM Team Head', 'T0 CM Name', 'T0 CM Team Head', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-Days since last Action', 'Master Status L2', 'Master Status - CalCode']]#.value_counts()
+
+
+    # In[ ]:
+
+
+    aList = pd.Series(MIMast_c['CM2-CM Name'].value_counts().index.tolist()).fillna('0').str.upper()
+
+
+    # In[ ]:
+
+
+    aCMTHList = GetCMTeamHeadforCM(aList)
+
+
+    # In[ ]:
+
+
+    aList[aCMTHList.isnull()].value_counts()
+
+
+    # In[ ]:
+
+
+    MIMast_Result[MIMast_Result['CM2-CM Team Head'].str.contains('Ruby', na=False)]['CM2-CM Name'].value_counts()
+
+
+    # In[ ]:
+
+
+    for i in range(DiffAna.shape[0]):
+        IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[i])
+        print('*******')
+        print(i)
+
+        print(VBASource.loc[IndDiffRes, 'Master Status L2'].value_counts())
+
+        print(MIMast_Result.loc[IndDiffRes, 'Master Status L2'].value_counts())
+    #     print(MIMast_Result.loc[IndDiffRes]['QVOpen-Latest DC Finalised by ID'])
+
+
+    # In[ ]:
+
+
+    for i in range(DiffAna.shape[0]):
+        IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[i])
+        print('*******')
+        print(i)
+        print('-------')
+        print(VBASource.loc[IndDiffRes, ['Customer ID', 'Master-CM Team Head', 'T0', 'T0 CM Name', 'CM2-CM Name', 'QVOpen-Latest DC Finalised by ID', 'Master Status L2']])
+        print('-------')
+        print(MIMast_Result.loc[IndDiffRes, ['Master-CM Team Head', 'T0', 'T0 CM Name', 'CM2-CM Name', 'QVOpen-Latest DC Finalised by ID', 'Master Status L2']])
+    #     print(MIMast_Result.loc[IndDiffRes]['QVOpen-Latest DC Finalised by ID'])
+
+
+    # In[ ]:
+
+
+    IndDiffRes = IndDiffRes[:4]
+
+
+    # In[ ]:
+
+
+    CustomerID.tolist()[:4]
+
+
+    # In[ ]:
+
+
+    VBASource['T0'][IndDiffRes].value_counts()
+
+
+    # In[ ]:
+
+
+    MIMast_Result['T0'][IndDiffRes].value_counts()
+
+
+    # In[ ]:
+
+
+    VBASource.loc[IndDiffRes][['Customer ID', 'T0', 'Segment', 'QVOpen-Review Reason', 'QVOpen-Initiated Date', 'KPI7 Due Date']]
+
+
+    # In[ ]:
+
+
+    MIMast_Result.loc[IndDiffRes][['Customer ID', 'T0', 'QVOpen-Review Reason', 'QVOpen-Initiated Date', 'KPI7 Due Date']]
+
+
+    # In[ ]:
+
+
+    Col2Check = ['RMTH OTLM Date', 'RMTH OTLM Input Date', 'T90 All Doc Received Date', 'T90 All Doc Received Input Date']
+
+    for aCol in Col2Check:
+        ReqCol = (aCol, aCol)
+        # ReqCol = ('RMTH OTLM Input Date', 'RMTH OTLM Input Date')
+        aDiff = Debug_ErrorSummary(MIMast_c, MIMast_Result, ReqCol)
+        DiffAna = Debug_ListErrorValue(aDiff)
+        DiffAna
+        print('Column:\t%s' % aCol)
+        for i in range(0, aDiff.shape[0]):
+            IndDiffRes, IndDiffRes_VBA, CustomerID = GetIndex(aDiff, DiffAna.index[0])
+            Sel = (MIMast_c.loc[IndDiffRes]['Extended Due Date'] != MIMast_Result.loc[IndDiffRes]['Extended Due Date'])
+            TTL_Error = np.sum(Sel)
+            if TTL_Error > 0:
+                print(ReqCol)
+
+
+    # # End of Code
+
+    # In[ ]:
 
 
 
