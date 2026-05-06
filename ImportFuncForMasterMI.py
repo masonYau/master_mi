@@ -98,16 +98,16 @@ MICutOffDate = DT.datetime(2025, 11, 2, 0, 0)
 # GPRM_Name = pd.Series(['JOHN C DENG', 'KERRY H M HUNG'])
 
 # CMTkr_FileIndex = {'AlexKFLi' : 'Alex K F LI',
-# 'ConiCTLeung' : 'Coni C T LEUNG',
-# 'GalieKYLee' : 'Galie K Y LEE',
-# 'HelenHLLeung' : 'Helen H L LEUNG',
-# 'JohnGXLong' : 'John G X LONG',
-# 'KarlKWMan' : 'Karl K W MAN',
-# 'LoritaVCChan' : 'Lorita V C CHAN',
-# 'MarcoYOChung' : 'Marco Y O CHUNG',
-# 'MaryLNCheung' : 'Mary L N CHEUNG',
-# 'PeggyCYFan' : 'Peggy C Y FAN',
-# 'RubyQYChen' : 'Ruby Q Y CHEN'}
+#                   'ConiCTLeung' : 'Coni C T LEUNG',
+#                   'GalieKYLee' : 'Galie K Y LEE',
+#                   'HelenHLLeung' : 'Helen H L LEUNG',
+#                   'JohnGXLong' : 'John G X LONG',
+#                   'KarlKWMan' : 'Karl K W MAN',
+#                   'LoritaVCChan' : 'Lorita V C CHAN',
+#                   'MarcoYOChung' : 'Marco Y O CHUNG',
+#                   'MaryLNCheung' : 'Mary L N CHEUNG',
+#                   'PeggyCYFan' : 'Peggy C Y FAN',
+#                   'RubyQYChen' : 'Ruby Q Y CHEN'}
 
 
 # # List of Functions
@@ -121,20 +121,20 @@ MICutOffDate = DT.datetime(2025, 11, 2, 0, 0)
 
 
 def TimeSpent(start, stop):
-Dt = stop - start
-Dts = stop - start
-title = 'Time Spent (sec):\t%.3f'
+    Dt = stop - start
+    Dts = stop - start
+    title = 'Time Spent (sec):\t%.3f'
 
-if Dt > 60:
-Dt = Dt / 60
-title = 'Time Spent (min):\t%.3f'
-elif Dt > 60:
-Dt = Dt / 60
-title = 'Time Spent (hour):\t%.3f'
+    if Dt > 60:
+        Dt = Dt / 60
+        title = 'Time Spent (min):\t%.3f'
+    elif Dt > 60:
+        Dt = Dt / 60
+        title = 'Time Spent (hour):\t%.3f'
 
-print(title % Dt)
+    print(title % Dt)
 
-return Dts
+    return Dts
 
 
 # ## ProcessDSFile
@@ -154,114 +154,114 @@ return Dts
 
 def ProcessDSFile(DWS, InCols='', SortField='', asd=False, DateField=False):
 
-DWS = DWS.replace('-', np.nan)
-iMax = DWS.shape[0]
+    DWS = DWS.replace('-', np.nan)
+    iMax = DWS.shape[0]
 
-Ctr = 0
-if SortField == '':
-print('No Field was sorted.')
-else:
-#print(type(SortField))
-#print(type(asd))
-#print(type(DateField))
-if 'str' in str(type(SortField)) and 'bool' in str(type(asd)) and 'bool' in str(type(DateField)):
-Ctr = 0
-elif 'list' in str(type(SortField)) and 'list' in str(type(asd)) and 'list' in str(type(DateField)):
-Ctr = 1
+    Ctr = 0
+    if SortField == '':
+        print('No Field was sorted.')
+    else:
+        #print(type(SortField))
+        #print(type(asd))
+        #print(type(DateField))
+        if 'str' in str(type(SortField)) and 'bool' in str(type(asd)) and 'bool' in str(type(DateField)):
+            Ctr = 0
+        elif 'list' in str(type(SortField)) and 'list' in str(type(asd)) and 'list' in str(type(DateField)):
+            Ctr = 1
 
-if (len(SortField) != len(asd)) or (len(SortField) != len(DateField)):
-print('Size')
-Ctr = -1
+            if (len(SortField) != len(asd)) or (len(SortField) != len(DateField)):
+                print('Size')
+                Ctr = -1
 
-for aVal in asd:
-if 'bool' in str(type(aVal)):
-pass
-else:
-print('asd')
-Ctr = -1
-for aVal in DateField:
-if 'bool' in str(type(aVal)):
-pass
-else:
-print('DateField')
-Ctr = -1
+            for aVal in asd:
+                if 'bool' in str(type(aVal)):
+                    pass
+                else:
+                    print('asd')
+                    Ctr = -1
+            for aVal in DateField:
+                if 'bool' in str(type(aVal)):
+                    pass
+                else:
+                    print('DateField')
+                    Ctr = -1
 
-else:
-#print('ABC')
-Ctr = -1
+        else:
+            #print('ABC')
+            Ctr = -1
 
-if Ctr == -1:
-print('\'SortField\' & \'asd\' & \'DateField\' are not input properly.')
-return 0
-print('Import Type:\t%d' % Ctr)
+        if Ctr == -1:
+            print('\'SortField\' & \'asd\' & \'DateField\' are not input properly.')
+            return 0
+    print('Import Type:\t%d' % Ctr)
 
-if InCols == '':
-pass
-else:
+    if InCols == '':
+        pass
+    else:
 
-print('Before remove NA in Index Column:\t' + str(DWS.shape))
-DWS = DWS.dropna(subset=[InCols])
-DWS = DWS.reset_index(drop=True)
-print('After remove NA in Index Column:\t' + str(DWS.shape))
+        print('Before remove NA in Index Column:\t' + str(DWS.shape))
+        DWS = DWS.dropna(subset=[InCols])
+        DWS = DWS.reset_index(drop=True)
+        print('After remove NA in Index Column:\t' + str(DWS.shape))
 
-iMax = DWS.shape[0]
-for aCol in DWS.columns.tolist():
-#print(aCol)
-if 'Date' in str(aCol):
-#print('%s is a Column with Date.' % aCol)
-for i in range(0, iMax):
-#print(i)
-if 'datetime.time' in str(type(DWS.loc[i, aCol])) :
-DWS.loc[i, aCol] = np.nan
-#print(aCol)
-DWS[aCol] = pd.to_datetime(DWS[aCol])
-
-
-
-if SortField == '':
-print('No Field was sorted.')
-else:
-
-DWS = DWS.sort_values(by=SortField, ascending=asd)
-
-#if Ctr == 0:
-# DWS = DWS.sort_values(by=SortField, ascending=asd)
-#elif Ctr == 1:
-# for j in range(len(SortField)-1, -1, -1):
-# DWS = DWS.sort_values(by=SortField[j], ascending=asd[j])
-
-#return DWS
-
-if 'list' in str(type(InCols)):
-
-for aInCol in InCols:
-if aInCol == '':
-print('No Column was checked duplication.')
-#return DWS
-else:
-#DWS = DWS.dropna(subset=[InCols])
-Sel = np.logical_not(DWS.duplicated(subset=aInCol, keep='last').tolist())
-DWS = DWS[Sel]
-print('Removed Duplicated record for Column \'%s\'' % aInCol)
-pass
+    iMax = DWS.shape[0]
+    for aCol in DWS.columns.tolist():
+        #print(aCol)
+        if 'Date' in str(aCol):
+            #print('%s is a Column with Date.' % aCol)
+            for i in range(0, iMax):
+                #print(i)
+                if 'datetime.time' in str(type(DWS.loc[i, aCol])) :
+                    DWS.loc[i, aCol] = np.nan
+            #print(aCol)
+            DWS[aCol] = pd.to_datetime(DWS[aCol])
 
 
 
-elif 'str' in str(type(InCols)):
-if InCols == '':
-print('No Column was checked duplication.')
-#return DWS
-else:
-#DWS = DWS.dropna(subset=[InCols])
-Sel = np.logical_not(DWS.duplicated(subset=InCols, keep='last').tolist())
-DWS = DWS[Sel]
-#print('hi')
-print('Removed Duplicated record for Column \'%s\'' % InCols)
-pass
-else:
-print('No Column was checked duplication.')
+    if SortField == '':
+        print('No Field was sorted.')
+    else:
 
-return DWS
+        DWS = DWS.sort_values(by=SortField, ascending=asd)
+
+        #if Ctr == 0:
+        #    DWS = DWS.sort_values(by=SortField, ascending=asd)
+        #elif Ctr == 1:
+        #    for j in range(len(SortField)-1, -1, -1):
+        #        DWS = DWS.sort_values(by=SortField[j], ascending=asd[j])
+
+        #return DWS
+
+    if 'list' in str(type(InCols)):
+
+        for aInCol in InCols:
+            if aInCol == '':
+                print('No Column was checked duplication.')
+                #return DWS
+            else:
+                #DWS = DWS.dropna(subset=[InCols])
+                Sel = np.logical_not(DWS.duplicated(subset=aInCol, keep='last').tolist())
+                DWS = DWS[Sel]
+                print('Removed Duplicated record for Column \'%s\'' % aInCol)
+            pass
+
+
+
+    elif 'str' in str(type(InCols)):
+        if InCols == '':
+            print('No Column was checked duplication.')
+            #return DWS
+        else:
+            #DWS = DWS.dropna(subset=[InCols])
+            Sel = np.logical_not(DWS.duplicated(subset=InCols, keep='last').tolist())
+            DWS = DWS[Sel]
+            #print('hi')
+            print('Removed Duplicated record for Column \'%s\'' % InCols)
+            pass
+    else:
+        print('No Column was checked duplication.')
+
+    return DWS
 
 
 # ## GetReqCol
@@ -283,57 +283,57 @@ return DWS
 
 def GetReqCol(MIWS, DWS, ImType="", InColM="", InColS=""):
 
-ReqColM = []
-ReqColS = []
-#print(str(type(InCol)))
+    ReqColM = []
+    ReqColS = []
+    #print(str(type(InCol)))
 
-if InColM == "":
-ReqColM = []
-#ReqColS = []
-elif 'str' in str(type(InColM)):
-if InColM == "":
-ReqColM = []
-#ReqColS = []
-else:
-ReqColM.append(InColM) #['CIN']
-#ReqColS.append(InCol)
-else:
-print('Invalid arg of InColM.')
-return 0
+    if InColM == "":
+        ReqColM = []
+        #ReqColS = []
+    elif 'str' in str(type(InColM)):
+        if InColM == "":
+            ReqColM = []
+            #ReqColS = []
+        else:
+            ReqColM.append(InColM)  #['CIN']
+            #ReqColS.append(InCol)
+    else:
+        print('Invalid arg of InColM.')
+        return 0
 
 
-if InColS == "":
-#ReqColM = []
-ReqColS = []
-elif 'str' in str(type(InColS)):
-if InColS == "":
-#ReqColM = []
-ReqColS = []
-else:
-#ReqColM.append(InCol)
-ReqColS.append(InColS) #['Customer Number']
-else:
-print('Invalid arg of InColS.')
-return 0
-#print(ReqCol)
-SCol = MIWS.columns.tolist()
-DCol = DWS.columns.tolist()
-if ImType == '':
-for aCol in DCol:
-if aCol in SCol:
-ReqColM.append(aCol)
-ReqColS.append(aCol)
-else:
-for aCol in DCol:
+    if InColS == "":
+        #ReqColM = []
+        ReqColS = []
+    elif 'str' in str(type(InColS)):
+        if InColS == "":
+            #ReqColM = []
+            ReqColS = []
+        else:
+            #ReqColM.append(InCol)
+            ReqColS.append(InColS) #['Customer Number']
+    else:
+        print('Invalid arg of InColS.')
+        return 0
+    #print(ReqCol)
+    SCol = MIWS.columns.tolist()
+    DCol = DWS.columns.tolist()
+    if ImType == '':
+        for aCol in DCol:
+            if aCol in SCol:
+                ReqColM.append(aCol)
+                ReqColS.append(aCol)
+    else:
+        for aCol in DCol:
 
-tmP = str(ImType + '-' + aCol)
+            tmP = str(ImType + '-' + aCol)
 
-if tmP in SCol:
+            if tmP in SCol:
 
-ReqColM.append(tmP)
-ReqColS.append(aCol)
+                ReqColM.append(tmP)
+                ReqColS.append(aCol)
 
-return ReqColM, ReqColS
+    return ReqColM, ReqColS
 
 
 # ## Adjust QV staff
@@ -356,101 +356,101 @@ return ReqColM, ReqColS
 
 
 # def adjust_qvfile(aFile, staff_id, handle_date):
-# QV_ = pd.read_excel('./' + aFile)
-# print(QV_.shape[0])
-# QV_[staff_id] = QV_[staff_id].astype('str')
+#     QV_ = pd.read_excel('./' + aFile)
+#     print(QV_.shape[0])
+#     QV_[staff_id] = QV_[staff_id].astype('str')
 
-# QV_del = pd.merge(QV_, staff_list, how='left',left_on=[staff_id],right_on=['Staff ID'])
-# QV_del = QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del[handle_date] != '-'),:]
-# QV_del[handle_date] = pd.to_datetime(pd.to_datetime(QV_del[handle_date]).dt.date)
+#     QV_del = pd.merge(QV_, staff_list, how='left',left_on=[staff_id],right_on=['Staff ID'])
+#     QV_del = QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del[handle_date] != '-'),:]
+#     QV_del[handle_date] = pd.to_datetime(pd.to_datetime(QV_del[handle_date]).dt.date)
 
-# QV_del['del_ind'] = 0
+#     QV_del['del_ind'] = 0
 
-# QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del[handle_date] >= QV_del['Start Date'])&(QV_del[handle_date] <= QV_del['End Date']),['del_ind']] = 1
+#     QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del[handle_date] >= QV_del['Start Date'])&(QV_del[handle_date] <= QV_del['End Date']),['del_ind']] = 1
 
-# QV_final = QV_.drop(QV_del[(QV_del.del_ind == 1) ].index)
-# print(QV_final.shape[0])
-# return QV_final
+#     QV_final = QV_.drop(QV_del[(QV_del.del_ind == 1) ].index)
+#     print(QV_final.shape[0])
+#     return QV_final
 
 
 # In[10]:
 
 
 # for aFile in Files:
-# if aFile[:2].upper() == 'QV':
-# for i in range(0, len(QVF)):
-# if QVF[i].upper() in aFile.upper():
-# if QVF[i] == 'QVQC':
+#     if aFile[:2].upper() == 'QV':
+#         for i in range(0, len(QVF)):
+#             if QVF[i].upper() in aFile.upper():
+#                 if QVF[i] == 'QVQC':
 
-# QV_ = pd.read_excel('./' + aFile)
-# print(QV_.shape[0])
-# QV_['Latest QC Completed by'] = QV_['Latest QC Completed by'].astype('str')
+#                     QV_ = pd.read_excel('./' + aFile)
+#                     print(QV_.shape[0])
+#                     QV_['Latest QC Completed by'] = QV_['Latest QC Completed by'].astype('str')
 
-# QV_del = pd.merge(QV_, staff_list, how='left',left_on=['Latest QC Completed by'],right_on=['Staff ID'])
+#                     QV_del = pd.merge(QV_, staff_list, how='left',left_on=['Latest QC Completed by'],right_on=['Staff ID'])
 
-# QV_del['Latest QC Completion Date'] = pd.to_datetime(pd.to_datetime(QV_del['Latest QC Completion Date']).dt.date)
+#                     QV_del['Latest QC Completion Date'] = pd.to_datetime(pd.to_datetime(QV_del['Latest QC Completion Date']).dt.date)
 
-# QV_del['del_ind'] = 0
+#                     QV_del['del_ind'] = 0
 
-# QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del['Latest QC Completion Date'] >= QV_del['Start Date'])&(QV_del['Latest QC Completion Date'] <= QV_del['End Date']),['del_ind']] = 1
+#                     QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del['Latest QC Completion Date'] >= QV_del['Start Date'])&(QV_del['Latest QC Completion Date'] <= QV_del['End Date']),['del_ind']] = 1
 
-# QVQC_final = QV_.drop(QV_del[(QV_del.del_ind == 1) ].index)
-# print(QVQC_final.shape[0])
-# QVQC_final.to_excel('./' + aFile )
-# print('delete:\t%s' % aFile)
+#                     QVQC_final = QV_.drop(QV_del[(QV_del.del_ind == 1) ].index)
+#                     print(QVQC_final.shape[0])
+#                     QVQC_final.to_excel('./' + aFile )
+#                     print('delete:\t%s' % aFile)
 
-# elif QVF[i] == 'QVClosedCAN':
-# QVClosedCAN_final = adjust_qvfile(aFile,staff_id ='Review ID',handle_date = 'Approval/Cancel Date')
+#                 elif QVF[i] == 'QVClosedCAN':
+#                     QVClosedCAN_final = adjust_qvfile(aFile,staff_id ='Review ID',handle_date = 'Approval/Cancel Date')
 
-# QVClosedCAN_final.to_excel('./' + aFile )
-# print('delete:\t%s' % aFile)
+#                     QVClosedCAN_final.to_excel('./' + aFile )
+#                     print('delete:\t%s' % aFile)
 
-# elif QVF[i] == 'QVQA':
-# QV_ = pd.read_excel('./' + aFile)
-# print(QV_.shape[0])
-# QV_['Latest QA Completed by'] = QV_['Latest QA Completed by'].astype('str')
+#                 elif QVF[i] == 'QVQA':
+#                     QV_ = pd.read_excel('./' + aFile)
+#                     print(QV_.shape[0])
+#                     QV_['Latest QA Completed by'] = QV_['Latest QA Completed by'].astype('str')
 
-# QV_del = pd.merge(QV_, staff_list, how='left',left_on=['Latest QA Completed by'],right_on=['Staff ID'])
+#                     QV_del = pd.merge(QV_, staff_list, how='left',left_on=['Latest QA Completed by'],right_on=['Staff ID'])
 
-# QV_del['Latest QA Completion Date'] = pd.to_datetime(pd.to_datetime(QV_del['Latest QA Completion Date']).dt.date)
+#                     QV_del['Latest QA Completion Date'] = pd.to_datetime(pd.to_datetime(QV_del['Latest QA Completion Date']).dt.date)
 
-# QV_del['del_ind'] = 0
+#                     QV_del['del_ind'] = 0
 
-# QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del['Latest QA Completion Date'] >= QV_del['Start Date'])&(QV_del['Latest QA Completion Date'] <= QV_del['End Date']),['del_ind']] = 1
+#                     QV_del.loc[(QV_del['Staff ID'] != None)&(QV_del['Latest QA Completion Date'] >= QV_del['Start Date'])&(QV_del['Latest QA Completion Date'] <= QV_del['End Date']),['del_ind']] = 1
 
-# QVQA_final = QV_.drop(QV_del[(QV_del.del_ind == 1) ].index)
-# # print(QV_final.shape[0])
-# QVQA_final.to_excel('./' + aFile )
-# print('delete:\t%s' % aFile)
+#                     QVQA_final = QV_.drop(QV_del[(QV_del.del_ind == 1) ].index)
+# #                     print(QV_final.shape[0])
+#                     QVQA_final.to_excel('./' + aFile )
+#                     print('delete:\t%s' % aFile)
 
-# elif QVF[i] == 'QVOpen':
-# QVOpen_final = adjust_qvfile(aFile,staff_id ='Latest DC Finalised by ID',handle_date = 'Latest DC Finalised Date')
+#                 elif QVF[i] == 'QVOpen':
+#                     QVOpen_final = adjust_qvfile(aFile,staff_id ='Latest DC Finalised by ID',handle_date = 'Latest DC Finalised Date')
 
-# QVOpen_final.to_excel('./' + aFile )
-# print('delete:\t%s' % aFile)
+#                     QVOpen_final.to_excel('./' + aFile )
+#                     print('delete:\t%s' % aFile)
 
-# elif QVF[i] == 'QVClosedAPP':
-# QVClosedAPP_ = pd.read_excel('./' + aFile)
-# print(aFile)
+#                 elif QVF[i] == 'QVClosedAPP':
+#                     QVClosedAPP_ = pd.read_excel('./' + aFile)
+#                     print(aFile)
 
-# QVClosedAPP_['Latest DC Finalised by ID'] = QVClosedAPP_['Latest DC Finalised by ID'].astype('str')
-# QVClosedAPP_del = pd.merge(QVClosedAPP_, staff_list, how='left',left_on=['Latest DC Finalised by ID'],right_on=['Staff ID'])
+#                     QVClosedAPP_['Latest DC Finalised by ID'] = QVClosedAPP_['Latest DC Finalised by ID'].astype('str')
+#                     QVClosedAPP_del = pd.merge(QVClosedAPP_, staff_list, how='left',left_on=['Latest DC Finalised by ID'],right_on=['Staff ID'])
 
-# QVClosedAPP_del_1 = QVClosedAPP_del.loc[(QVClosedAPP_del['Latest DC Finalised by ID'] != '-'),:]
-# QVClosedAPP_del_2 = QVClosedAPP_del.loc[(QVClosedAPP_del['Latest DC Finalised by ID'] == '-'),:]
+#                     QVClosedAPP_del_1 = QVClosedAPP_del.loc[(QVClosedAPP_del['Latest DC Finalised by ID'] != '-'),:]
+#                     QVClosedAPP_del_2 = QVClosedAPP_del.loc[(QVClosedAPP_del['Latest DC Finalised by ID'] == '-'),:]
 
-# QVClosedAPP_del_1['Latest DC Finalised Date'] = pd.to_datetime(pd.to_datetime(QVClosedAPP_del_1['Latest DC Finalised Date']).dt.date)
+#                     QVClosedAPP_del_1['Latest DC Finalised Date'] = pd.to_datetime(pd.to_datetime(QVClosedAPP_del_1['Latest DC Finalised Date']).dt.date)
 
-# QVClosedAPP_del_1.loc[(QVClosedAPP_del_1['Staff ID'] != None)&(QVClosedAPP_del_1['Latest DC Finalised Date'] >= QVClosedAPP_del_1['Start Date'])&(QVClosedAPP_del_1['Latest DC Finalised Date'] <= QVClosedAPP_del_1['End Date']),['Review Reason']] = 'New to Bank'
+#                     QVClosedAPP_del_1.loc[(QVClosedAPP_del_1['Staff ID'] != None)&(QVClosedAPP_del_1['Latest DC Finalised Date'] >= QVClosedAPP_del_1['Start Date'])&(QVClosedAPP_del_1['Latest DC Finalised Date'] <= QVClosedAPP_del_1['End Date']),['Review Reason']] = 'New to Bank'
 
-# QVClosedAPP_del_1 = QVClosedAPP_del_1.drop(['Staff ID','Start Date','End Date'], axis=1)
-# QVClosedAPP_del_2 = QVClosedAPP_del_2.drop(['Staff ID','Start Date','End Date'], axis=1)
+#                     QVClosedAPP_del_1 = QVClosedAPP_del_1.drop(['Staff ID','Start Date','End Date'], axis=1)
+#                     QVClosedAPP_del_2 = QVClosedAPP_del_2.drop(['Staff ID','Start Date','End Date'], axis=1)
 
-# QVClosedAPP_final = pd.concat([QVClosedAPP_del_1,QVClosedAPP_del_2])
+#                     QVClosedAPP_final = pd.concat([QVClosedAPP_del_1,QVClosedAPP_del_2])
 
-# QVClosedAPP_final.to_excel('./' + aFile )
+#                     QVClosedAPP_final.to_excel('./' + aFile )
 
-# print('adjust:\t%s' % aFile)
+#                     print('adjust:\t%s' % aFile)
 
 
 
@@ -487,180 +487,180 @@ return ReqColM, ReqColS
 
 def ImportData(MIWS, DWS, ImType='', InColM='', InColS='', ImMethod=0, MapCol=''):
 
-#MapCol: Tuple of 2 array with equal dimension ([InColM, ColM_1, ColM_2, ...], [InColS, ColS_1, ColS_2, ...])
+    #MapCol: Tuple of 2 array with equal dimension ([InColM, ColM_1, ColM_2, ...], [InColS, ColS_1, ColS_2, ...])
 
 
-MIWS_C = MIWS.copy(deep=True)
+    MIWS_C = MIWS.copy(deep=True)
 
-DWS_C = DWS.copy(deep=True)
-#print("Pt-01")
-if MapCol == '':
+    DWS_C = DWS.copy(deep=True)
+    #print("Pt-01")
+    if MapCol == '':
 
-ReqColM, ReqColS = GetReqCol(MIWS_C, DWS_C, ImType, InColM, InColS)
+        ReqColM, ReqColS = GetReqCol(MIWS_C, DWS_C, ImType, InColM, InColS)
 
-else:
+    else:
 
-if not 'tuple' in str(type(MapCol)):
+        if not 'tuple' in str(type(MapCol)):
 
-print('Invalid Input for MapCol. Tuple of 2 arrays with same size is required.(Error:1)')
-return 0
-elif len(MapCol) != 2:
-print('Invalid Input for MapCol. Tuple of 2 arrays with same size is required.(Error:2)')
-return 0
-elif len(MapCol[0]) != len(MapCol[1]):
+            print('Invalid Input for MapCol. Tuple of 2 arrays with same size is required.(Error:1)')
+            return 0
+        elif len(MapCol) != 2:
+            print('Invalid Input for MapCol. Tuple of 2 arrays with same size is required.(Error:2)')
+            return 0
+        elif len(MapCol[0]) != len(MapCol[1]):
 
-print('Invalid Input for MapCol. Tuple of 2 arrays with same size is required.(Error:3)')
-return 0
+            print('Invalid Input for MapCol. Tuple of 2 arrays with same size is required.(Error:3)')
+            return 0
 
-ReqColM = MapCol[0]
-ReqColS = MapCol[1]
+        ReqColM = MapCol[0]
+        ReqColS = MapCol[1]
 
-InColM = ReqColM[0]
-InColS = ReqColS[0]
-
-
-# if np.array(ReqColM[0]) == np.array(ReqColS[0]):
-# print('Column Matched!')
-# else:
-# print('Column Not Matched!')
-
-ExtM = MIWS_C[ReqColM]
-ExtS = DWS_C[ReqColS]
-
-# print('No of column:')
-# print(len(ExtM.columns.tolist()))
-# print(len(ExtS.columns.tolist()))
-
-#print("Pt-02")
-if InColM != '':
-#print('Be4 ReqColS:')
-#print((ReqColS))
-ExtM = ExtM.set_index(InColM)
-#print('Mid ReqColS:')
-#print((ReqColS))
-ReqColM.remove(InColM)
-#print('After ReqColS:')
-#print((ReqColS))
-#print(ExtM)
+        InColM = ReqColM[0]
+        InColS = ReqColS[0]
 
 
-#print("#############################################")
-if InColS != '':
-#print('Be4 ReqColS:')
-#print((ReqColS))
-ExtS = ExtS.set_index(InColS)
-ReqColS.remove(InColS)
-#print('No of column:')
-#print(len(ExtS.columns.tolist()))
-#print('After ReqColS:')
-#print((ReqColS))
-tmP = []
-if ImType != '':
-for i in ReqColS:
-tmP.append(ImType + '-' + i)
-ExtS.columns = tmP
-ReqColS = ExtS.columns.tolist()
-#print("Pt-03")
-if ImMethod:
-#Multi
-if MapCol == '':
-SelIndex = ExtM.index.intersection(ExtS.index)
-#print(ReqColS)
+#    if np.array(ReqColM[0]) == np.array(ReqColS[0]):
+#        print('Column Matched!')
+#    else:
+#        print('Column Not Matched!')
+
+    ExtM = MIWS_C[ReqColM]
+    ExtS = DWS_C[ReqColS]
+
+#    print('No of column:')
+#    print(len(ExtM.columns.tolist()))
+#    print(len(ExtS.columns.tolist()))
+
+    #print("Pt-02")
+    if InColM != '':
+        #print('Be4 ReqColS:')
+        #print((ReqColS))
+        ExtM = ExtM.set_index(InColM)
+        #print('Mid ReqColS:')
+        #print((ReqColS))
+        ReqColM.remove(InColM)
+        #print('After ReqColS:')
+        #print((ReqColS))
+        #print(ExtM)
 
 
-#### For Debug
-for aaCol in ReqColM:
-# print(aaCol)
-ExtM.loc[SelIndex, aaCol] = ExtS.loc[SelIndex, aaCol]
-
-####
-ExtM.loc[SelIndex, ReqColM] = ExtS.loc[SelIndex, ReqColS]
-
-if InColM != '':
-MIWS_C = MIWS_C.set_index(InColM)
-SelIndex = MIWS_C.index.intersection(ExtM.index)
-MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
-else:
-
-SelIndex = ExtM.index.intersection(ExtS.index)
-
-#for ik in range(0, len(ReqColM)):
-# print(str(ReqColM[ik]) + '\t' + str(ExtS.columns.tolist()[ik]) + '\t' + str(ExtM.columns.tolist()[ik]))
-
-#print(ExtM.index.name, ExtS.index.name)
-ExtS.columns = ReqColM
-
-ExtM.loc[SelIndex, ReqColM] = ExtS.loc[SelIndex, ReqColM]
-
-if InColM != '':
-MIWS_C = MIWS_C.set_index(InColM)
-SelIndex = MIWS_C.index.intersection(ExtM.index)
+    #print("#############################################")
+    if InColS != '':
+        #print('Be4 ReqColS:')
+        #print((ReqColS))
+        ExtS = ExtS.set_index(InColS)
+        ReqColS.remove(InColS)
+        #print('No of column:')
+        #print(len(ExtS.columns.tolist()))
+        #print('After ReqColS:')
+        #print((ReqColS))
+        tmP = []
+        if ImType != '':
+            for i in ReqColS:
+                tmP.append(ImType + '-' + i)
+            ExtS.columns = tmP
+            ReqColS = ExtS.columns.tolist()
+    #print("Pt-03")
+    if ImMethod:
+        #Multi
+        if MapCol == '':
+            SelIndex = ExtM.index.intersection(ExtS.index)
+            #print(ReqColS)
 
 
-MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
-else:
-#One (Default)
-#print("Pt-04")
-if MapCol == '':
-#print("Pt-04a")
-ExtM = ExtM.merge(ExtS, how='left', left_index=True, right_index=True)
-ColList = ExtM.columns.tolist()
-for aCol in ColList:
-if '_x' in aCol:
-ExtM = ExtM.drop(aCol, axis=1)
-ColList = ExtM.columns.tolist()
-for i in range(0, len(ColList)):
-if '_y' in ColList[i]:
-ColList[i] = ColList[i][:len(ColList[i])-2]
-ExtM.columns = ColList
-if InColM != '':
-MIWS_C = MIWS_C.set_index(InColM)
-SelIndex = MIWS_C.index.intersection(ExtM.index)
+            #### For Debug
+            for aaCol in ReqColM:
+#                print(aaCol)
+               ExtM.loc[SelIndex, aaCol] = ExtS.loc[SelIndex, aaCol]
 
-MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
+            ####
+            ExtM.loc[SelIndex, ReqColM] = ExtS.loc[SelIndex, ReqColS]
 
-else:
-#print('Hello')
-#print("Pt-04b")
-ExtM = ExtM.merge(ExtS, how='left', left_index=True, right_index=True)
-ColList = ExtM.columns.tolist()
+            if InColM != '':
+                    MIWS_C = MIWS_C.set_index(InColM)
+            SelIndex = MIWS_C.index.intersection(ExtM.index)
+            MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
+        else:
 
-chk0001 = 0
+            SelIndex = ExtM.index.intersection(ExtS.index)
 
-for aCol in ColList:
-if '_x' in aCol:
-ExtM = ExtM.drop(aCol, axis=1)
-chk0001 = 1
-ColList = ExtM.columns.tolist()
-for i in range(0, len(ColList)):
-if '_y' in ColList[i]:
-ColList[i] = ColList[i][:len(ColList[i])-2]
-chk0001 = 1
+            #for ik in range(0, len(ReqColM)):
+            #    print(str(ReqColM[ik]) + '\t' + str(ExtS.columns.tolist()[ik]) + '\t' + str(ExtM.columns.tolist()[ik]))
 
-if chk0001 == 0:
-for aCol in ColList:
-if aCol in ReqColM:
-ExtM = ExtM.drop(aCol, axis=1)
+            #print(ExtM.index.name, ExtS.index.name)
+            ExtS.columns = ReqColM
 
-ColList = ExtM.columns.tolist()
-#print(ReqColM)
-#print("####")
-# print(ExtM.columns)
-ExtM.columns = ReqColM
-# print(MIWS_C.head())
-if InColM != '':
-MIWS_C = MIWS_C.set_index(InColM)
-SelIndex = MIWS_C.index.intersection(ExtM.index)
+            ExtM.loc[SelIndex, ReqColM] = ExtS.loc[SelIndex, ReqColM]
 
-MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
-#return 0
-#print('*********************************')
-#print(MIWS_C.head())
-#print("Pt-05")
-if InColM != '':
-MIWS_C = MIWS_C.reset_index()
-#return MIWS_C
-return MIWS_C, ReqColM
+            if InColM != '':
+                    MIWS_C = MIWS_C.set_index(InColM)
+            SelIndex = MIWS_C.index.intersection(ExtM.index)
+
+
+            MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
+    else:
+        #One (Default)
+        #print("Pt-04")
+        if MapCol == '':
+            #print("Pt-04a")
+            ExtM = ExtM.merge(ExtS, how='left', left_index=True, right_index=True)
+            ColList = ExtM.columns.tolist()
+            for aCol in ColList:
+                if '_x' in aCol:
+                    ExtM = ExtM.drop(aCol, axis=1)
+            ColList = ExtM.columns.tolist()
+            for i in range(0, len(ColList)):
+                if '_y' in ColList[i]:
+                    ColList[i] = ColList[i][:len(ColList[i])-2]
+            ExtM.columns = ColList
+            if InColM != '':
+                MIWS_C = MIWS_C.set_index(InColM)
+            SelIndex = MIWS_C.index.intersection(ExtM.index)
+
+            MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
+
+        else:
+            #print('Hello')
+            #print("Pt-04b")
+            ExtM = ExtM.merge(ExtS, how='left', left_index=True, right_index=True)
+            ColList = ExtM.columns.tolist()
+
+            chk0001 = 0
+
+            for aCol in ColList:
+                if '_x' in aCol:
+                    ExtM = ExtM.drop(aCol, axis=1)
+                    chk0001 = 1
+            ColList = ExtM.columns.tolist()
+            for i in range(0, len(ColList)):
+                if '_y' in ColList[i]:
+                    ColList[i] = ColList[i][:len(ColList[i])-2]
+                    chk0001 = 1
+
+            if chk0001 == 0:
+                for aCol in ColList:
+                    if aCol in ReqColM:
+                        ExtM = ExtM.drop(aCol, axis=1)
+
+            ColList = ExtM.columns.tolist()
+            #print(ReqColM)
+            #print("####")
+#             print(ExtM.columns)
+            ExtM.columns = ReqColM
+#             print(MIWS_C.head())
+            if InColM != '':
+                MIWS_C = MIWS_C.set_index(InColM)
+            SelIndex = MIWS_C.index.intersection(ExtM.index)
+
+            MIWS_C.loc[SelIndex, ReqColM] = ExtM.loc[SelIndex, ReqColM]
+    #return 0
+    #print('*********************************')
+    #print(MIWS_C.head())
+    #print("Pt-05")
+    if InColM != '':
+        MIWS_C = MIWS_C.reset_index()
+    #return MIWS_C
+    return MIWS_C, ReqColM
 
 
 # ## FixColumnSeq
@@ -670,28 +670,28 @@ return MIWS_C, ReqColM
 
 
 def FixColumnSeq(MIWs01):
-MIColList = MIWs01.columns.tolist()
-if MIColList[0] == 'MI Seq':
-MIColList.remove('MI Seq')
-MIColList.append('MI Seq')
+    MIColList = MIWs01.columns.tolist()
+    if MIColList[0] == 'MI Seq':
+        MIColList.remove('MI Seq')
+        MIColList.append('MI Seq')
 
-MIColList.remove('CIN')
-MIColList.remove('Customer ID')
-MIColList.remove('Old / Dummy CID')
-MIColList.insert(0, 'Old / Dummy CID')
-MIColList.insert(0, 'CIN')
-MIColList.insert(0, 'Customer ID')
+    MIColList.remove('CIN')
+    MIColList.remove('Customer ID')
+    MIColList.remove('Old / Dummy CID')
+    MIColList.insert(0, 'Old / Dummy CID')
+    MIColList.insert(0, 'CIN')
+    MIColList.insert(0, 'Customer ID')
 
 
-#else:
-# MIColList.remove('CIN')
-# MIColList.remove('Customer ID')
-#
-# MIColList.insert(0, 'Customer ID')
-# MIColList.insert(0, 'CIN')
-# MIWs01 = MIWs01.loc[:, MIColList]
-MIWs01 = MIWs01.loc[:, MIColList]
-return MIWs01
+    #else:
+    #    MIColList.remove('CIN')
+    #    MIColList.remove('Customer ID')
+    #
+    #    MIColList.insert(0, 'Customer ID')
+    #    MIColList.insert(0, 'CIN')
+    #    MIWs01 = MIWs01.loc[:, MIColList]
+    MIWs01 = MIWs01.loc[:, MIColList]
+    return MIWs01
 
 
 # ## Merge_MI_MIOID
@@ -717,91 +717,91 @@ return MIWs01
 
 def Merge_MI_MIOID(MIWs01, MIWs01_OldCI, deBug=0, MapCol=''):
 
-aCopy = MIWs01.copy(deep=True)
-#MapCol.remove('MI Seq')
-if 'MI Seq' in MapCol:
-MapCol.remove('MI Seq')
+    aCopy = MIWs01.copy(deep=True)
+    #MapCol.remove('MI Seq')
+    if 'MI Seq' in MapCol:
+        MapCol.remove('MI Seq')
 
-Title = aCopy.columns.tolist()
+    Title = aCopy.columns.tolist()
 
-Title.remove('MI Seq')
+    Title.remove('MI Seq')
 
-NList = ['Customer ID', 'Old / Dummy CID', 'CIN', 'Customer Name']
+    NList = ['Customer ID', 'Old / Dummy CID', 'CIN', 'Customer Name']
 
-for aNList in NList:
-if aNList in Title:
-Title.remove(aNList)
+    for aNList in NList:
+        if aNList in Title:
+            Title.remove(aNList)
 
-if MapCol == '':
-for aTit in Title:
-if deBug:
-print('Processing:\t' + str(aTit))
-print(aCopy)
-aID = aCopy['MI Seq'][aCopy[aTit].isnull()].tolist()
-FID = MIWs01_OldCI['MI Seq'].isin(aID)
-Chk01 = np.logical_not(MIWs01_OldCI[aTit][FID].isnull())
-if deBug:
-print(np.sum(Chk01))
-if np.sum(Chk01) == 0:
-if deBug:
-print('\tNo Data for\t' + str(aTit))
-continue
-else:
-if deBug:
-print('\tWith Data to be re-imported.')
+    if MapCol == '':
+        for aTit in Title:
+            if deBug:
+                print('Processing:\t' + str(aTit))
+                print(aCopy)
+            aID = aCopy['MI Seq'][aCopy[aTit].isnull()].tolist()
+            FID = MIWs01_OldCI['MI Seq'].isin(aID)
+            Chk01 = np.logical_not(MIWs01_OldCI[aTit][FID].isnull())
+            if deBug:
+                print(np.sum(Chk01))
+            if np.sum(Chk01) == 0:
+                if deBug:
+                    print('\tNo Data for\t' + str(aTit))
+                continue
+            else:
+                if deBug:
+                    print('\tWith Data to be re-imported.')
 
 
-if np.sum(FID) > 0:
-if deBug:
-print('\t' + str(np.sum(FID)) + ' Record(s) located.')
-Slic = MIWs01_OldCI[FID]
-aCopy = ImportData(aCopy, Slic, ImMethod=1, MapCol=(['MI Seq', aTit], ['MI Seq', aTit]))[0]
-else:
-if deBug:
-print('\tNo Record located.')
-return MIWs01
-else:
-FID = []
-for i in range(0, len(MapCol)):
-aTit = MapCol[i]
-if deBug:
-print('Processing:\t' + str(aTit))
-aID = aCopy['MI Seq'][aCopy[aTit].isnull()].tolist()
-FID.append(aID)
-UID = set(FID[0])
+            if np.sum(FID) > 0:
+                if deBug:
+                    print('\t' + str(np.sum(FID)) + ' Record(s) located.')
+                Slic = MIWs01_OldCI[FID]
+                aCopy = ImportData(aCopy, Slic, ImMethod=1, MapCol=(['MI Seq', aTit], ['MI Seq', aTit]))[0]
+            else:
+                if deBug:
+                    print('\tNo Record located.')
+                return MIWs01
+    else:
+        FID = []
+        for i in range(0, len(MapCol)):
+            aTit = MapCol[i]
+            if deBug:
+                print('Processing:\t' + str(aTit))
+            aID = aCopy['MI Seq'][aCopy[aTit].isnull()].tolist()
+            FID.append(aID)
+        UID = set(FID[0])
 
-for i in range(0, len(FID)):
-UID = UID & set(FID[i])
+        for i in range(0, len(FID)):
+            UID = UID & set(FID[i])
 
-UID = list(UID)
-if deBug:
-print('UID:')
-print(UID)
-if len(UID) == 0:
-if deBug:
-print('\tNo Record located.')
-return MIWs01
+        UID = list(UID)
+        if deBug:
+            print('UID:')
+            print(UID)
+        if len(UID) == 0:
+            if deBug:
+                print('\tNo Record located.')
+            return MIWs01
 
-FID = MIWs01_OldCI['MI Seq'].isin(UID)
-if deBug:
-print('FID:')
-print(np.sum(FID))
-print(FID)
+        FID = MIWs01_OldCI['MI Seq'].isin(UID)
+        if deBug:
+            print('FID:')
+            print(np.sum(FID))
+            print(FID)
 
-if np.sum(FID) > 0:
-if deBug:
-print('No of record:\t' + str(len(UID)))
-Slic = MIWs01_OldCI[FID]
-MapCol.insert(0, 'MI Seq')
-aMapCol01 = MapCol.copy()
-aMapCol02 = MapCol.copy()
-aCopy = ImportData(aCopy, Slic, ImMethod=1, MapCol=(aMapCol01, aMapCol02))[0]
-else:
-if deBug:
-print('\tNo Record located.')
-return MIWs01
+        if np.sum(FID) > 0:
+            if deBug:
+                print('No of record:\t' + str(len(UID)))
+            Slic = MIWs01_OldCI[FID]
+            MapCol.insert(0, 'MI Seq')
+            aMapCol01 = MapCol.copy()
+            aMapCol02 = MapCol.copy()
+            aCopy = ImportData(aCopy, Slic, ImMethod=1, MapCol=(aMapCol01, aMapCol02))[0]
+        else:
+            if deBug:
+                print('\tNo Record located.')
+            return MIWs01
 
-return aCopy
+    return aCopy
 
 
 # ## CheckDF
@@ -821,44 +821,44 @@ return aCopy
 
 
 def CheckDF(Mst_C, MIWs01_C, IDCol, ImportedCol, allCol=False):
-D1 = pd.DataFrame()
-D1[IDCol] = Mst_C[IDCol]
-ImportedCol = list(set(ImportedCol))
-ImportedCol.sort()
-for aCol in ImportedCol:
-Sel = CheckCol(Mst_C, MIWs01_C, aCol, allCol=False)
+    D1 = pd.DataFrame()
+    D1[IDCol] = Mst_C[IDCol]
+    ImportedCol = list(set(ImportedCol))
+    ImportedCol.sort()
+    for aCol in ImportedCol:
+        Sel = CheckCol(Mst_C, MIWs01_C, aCol, allCol=False)
 
-D1[aCol] = Sel
-pass
-return D1
+        D1[aCol] = Sel
+        pass
+    return D1
 
 
 def CheckCol(Mst_C, MIWs01_C, aCol, allCol=False):
-vVal = np.array(Mst_C[aCol].values)
-pVal = np.array(MIWs01_C[aCol].values)
-Sel = vVal != pVal
-nc = np.sum(Sel)
-if nc > 0 or allCol:
-print('Checking:\t%s\t%d' % (aCol, nc))
-return Sel
+    vVal = np.array(Mst_C[aCol].values)
+    pVal = np.array(MIWs01_C[aCol].values)
+    Sel = vVal != pVal
+    nc = np.sum(Sel)
+    if nc > 0 or allCol:
+        print('Checking:\t%s\t%d' % (aCol, nc))
+    return Sel
 
 ## Code for Checking Score ##
 def CheckScoreCol(Mst01, MIWs02, Col, iCol):
-#Col = "QVQC-Initial Quality Score"
-#iCol = ['CIN']
+    #Col = "QVQC-Initial Quality Score"
+    #iCol = ['CIN']
 
-#print(MIWs02[Err[Col]][Col])
-#print(Mst01[Err[Col]][Col])
+    #print(MIWs02[Err[Col]][Col])
+    #print(Mst01[Err[Col]][Col])
 
-S01 = MIWs02[Err[Col]][Col].values
-S02 = Mst01[Err[Col]][Col].values
+    S01 = MIWs02[Err[Col]][Col].values
+    S02 = Mst01[Err[Col]][Col].values
 
-SD = S01 - S02
-#print(SD)
+    SD = S01 - S02
+    #print(SD)
 
-CS = SD > 0.0000001
+    CS = SD > 0.0000001
 
-print("No fo error after adjustng for truncation error:\t%d" % np.sum(CS))
+    print("No fo error after adjustng for truncation error:\t%d" % np.sum(CS))
 
 #print(MIWs02['QVClosedCAN-Approval/Cancel Date'][MIWs02['CIN'] == 4579112])
 #print(Mst01['QVClosedCAN-Approval/Cancel Date'][Mst01['CIN'] == 4579112])
@@ -873,83 +873,83 @@ print("No fo error after adjustng for truncation error:\t%d" % np.sum(CS))
 
 
 def JoinOSDoc(DocList):
-FullList = []
-for aDoc in DocList:
+    FullList = []
+    for aDoc in DocList:
 
-if aDoc != "":
+        if aDoc != "":
 
-tmpList = aDoc.split(";#")
-for tmP in tmpList:
+            tmpList = aDoc.split(";#")
+            for tmP in tmpList:
 
-if tmP in FullList:
+                if tmP in FullList:
 
-pass
-else:
-FullList.append(tmP)
-pass
-pass
-pass
-pass
-return (";#").join(FullList)
+                    pass
+                else:
+                    FullList.append(tmP)
+                    pass
+                pass
+            pass
+        pass
+    return (";#").join(FullList)
 
 def ModifyDocReg(IRD, CRTAppDate):
-#IRD = IRD.sort_values(by=["CIN", "Document Receive Date"])
-#print(IRD.shape)
-#CRTAppDate['QVClosedAPP-Approval/Cancel Date'] = CRTAppDate['QVClosedAPP-Approval/Cancel Date'].dt.date
-IRD["Document Receive Date"] = IRD["Document Receive Date"].dt.date
-ColTitle = IRD.columns.tolist()
-# CINs = IRD['CIN'].drop_duplicates().tolist()
-# for aCol in ColTitle:
-# if 'Document Type - ' in aCol:
-# IRD[aCol] = IRD[aCol].fillna("")
+    #IRD = IRD.sort_values(by=["CIN", "Document Receive Date"])
+    #print(IRD.shape)
+    #CRTAppDate['QVClosedAPP-Approval/Cancel Date'] = CRTAppDate['QVClosedAPP-Approval/Cancel Date'].dt.date
+    IRD["Document Receive Date"] = IRD["Document Receive Date"].dt.date
+    ColTitle = IRD.columns.tolist()
+#    CINs = IRD['CIN'].drop_duplicates().tolist()
+#    for aCol in ColTitle:
+#        if 'Document Type - ' in aCol:
+#            IRD[aCol] = IRD[aCol].fillna("")
 
 
-IRD['Keep'] = False
+    IRD['Keep'] = False
 
-for i in range(0, IRD.shape[0]):
-#print('ID:\t%d' % i)
-aCIN = IRD.loc[i]['CIN']
-#print(aCIN)
-Sel00 = CRTAppDate['CIN'] == aCIN
-#print(np.sum(Sel00))
-#print(CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0])
-if np.sum(Sel00) > 0:
-#print(CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0])
-#print(IRD.loc[i]["Document Receive Date"])
-#print(CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0])
-if CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0] < IRD.loc[i]["Document Receive Date"]:
-#print('Be4:')
-#print(IRD.loc[i, 'Keep'])
-IRD.loc[i, 'Keep'] = True
-#print('After:')
-#print(IRD.loc[i, 'Keep'])
-pass
-#elif:
-#pass
-pass
-else:
-IRD.loc[i, 'Keep'] = True
-pass
+    for i in range(0, IRD.shape[0]):
+        #print('ID:\t%d' % i)
+        aCIN = IRD.loc[i]['CIN']
+        #print(aCIN)
+        Sel00 = CRTAppDate['CIN'] == aCIN
+        #print(np.sum(Sel00))
+        #print(CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0])
+        if np.sum(Sel00) > 0:
+            #print(CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0])
+            #print(IRD.loc[i]["Document Receive Date"])
+            #print(CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0])
+            if CRTAppDate.loc[Sel00, 'QVClosedAPP-Approval/Cancel Date'].values[0] < IRD.loc[i]["Document Receive Date"]:
+                #print('Be4:')
+                #print(IRD.loc[i, 'Keep'])
+                IRD.loc[i, 'Keep'] = True
+                #print('After:')
+                #print(IRD.loc[i, 'Keep'])
+                pass
+            #elif:
+                #pass
+            pass
+        else:
+            IRD.loc[i, 'Keep'] = True
+        pass
 
-#print(IRD)
-IRD = IRD[IRD['Keep'].tolist()]
-#print(IRD)
-CINs = IRD['CIN'].drop_duplicates().tolist()
-IRD_Fin = IRD.copy(deep=True)
-IRD_Fin = IRD_Fin.drop_duplicates(subset='CIN', keep='last')
-for aCIN in CINs:
-Sel01 = IRD['CIN'] == aCIN
-tmpPD = IRD[Sel01].copy(deep=True)
-for aCol in ColTitle:
-if 'Document Type - ' in aCol:
-DocList = tmpPD[aCol].fillna("").tolist()
-DocList = JoinOSDoc(DocList)
-Sel02 = IRD_Fin['CIN'] == aCIN
-IRD_Fin.loc[Sel02, aCol] = DocList
-pass
-pass
-pass
-return IRD_Fin
+    #print(IRD)
+    IRD = IRD[IRD['Keep'].tolist()]
+    #print(IRD)
+    CINs = IRD['CIN'].drop_duplicates().tolist()
+    IRD_Fin = IRD.copy(deep=True)
+    IRD_Fin = IRD_Fin.drop_duplicates(subset='CIN', keep='last')
+    for aCIN in CINs:
+        Sel01 = IRD['CIN'] == aCIN
+        tmpPD = IRD[Sel01].copy(deep=True)
+        for aCol in ColTitle:
+            if 'Document Type - ' in aCol:
+                DocList = tmpPD[aCol].fillna("").tolist()
+                DocList = JoinOSDoc(DocList)
+                Sel02 = IRD_Fin['CIN'] == aCIN
+                IRD_Fin.loc[Sel02, aCol] = DocList
+                pass
+            pass
+        pass
+    return IRD_Fin
 
 
 # ## ImportStage1Report
@@ -959,451 +959,451 @@ return IRD_Fin
 
 
 def ImportStage1Report(MITemp_Copy, S1_Report_Ext, StaffList):
-start = time.time()
-#print(StaffList.columns.tolist())
-if not 'Employee Number' in StaffList.columns.tolist():
-StaffList['Employee Number'] = StaffList.index
-StaffList = StaffList.reset_index(drop=True)
-
-ImportedS1Col = ['S1 Report Date', 'Overall_Status_S1', 'T0 CM Name', 'T0 CM Team Head', 'T0',
-'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',
-'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities','Acceleration Case actual T0 date','Actual Review team(After CM assignment)']
-
-S1RDate = []
-S1Seg = []
-S1Team = []
-S1T0CMName = []
-S1T0CMTH = []
-S1T0CMStaffID = []
-S1Act = []
-S1GWIS = []
-S1MstStatus = []
-S1T0Date = []
-S1T30ActDate =[]
-S1T60ActDate =[]
-S1KYCIActDate =[]
-S1Remark = []
-S1Type = []
-S1AccelerationT0Date = []
-S1CMTeam = []
-
-checkID = ['X1630071']
-checkID = ['']
-
-iCount = 0
-
-for index, row in MITemp_Copy.iterrows():
-#print('Customer ID:\t%s\t%s'% (index, row['Old / Dummy CID']))
-S1R_Sub = S1_Report_Ext[S1_Report_Ext['Customer_ID_S1'].isin([index])]
-#print('No of S1 Record:\t%d' % S1R_Sub.shape[0])
-if row['Old / Dummy CID'] != '':
-Sel = S1_Report_Ext['Customer_ID_S1'].isin([row['Old / Dummy CID']])
-#print('No of old ID record:\t%d' % np.sum(Sel))
-if np.sum(Sel) > 0:
-S1R_Sub02 = S1_Report_Ext[Sel]
-#print(index)
-#print(row['Old / Dummy CID'])
-S1R_Sub = S1R_Sub.append(S1R_Sub02)
-S1R_Sub = S1R_Sub.sort_values(by=['Date_of_Report_S1'], ascending=True)
-#print(S1R_Sub)
-# if index in checkID:
-# print('No of S1 Record:\t%d' % S1R_Sub.shape[0])
-
-TmpS1Statuscode = 0
-
-StrOverallStatusS1 = '00'
-StrS1Remark = ""
-StrT0IssueDate = ""
-StrActivities = ""
-StrCMTeam = ""
-TmpS1ReportDate = 0
-TmpCMAssignDate = 0
-TmpT0IssueDate = 0
-TmpT30RmdLttrDate = 0
-TmpT60RmdLttrDate = 0
-TmpCurtLttrDate = 0
-
-TmpAccelerationT0Date = ""
-
-CanCode = ''
-OldCanCode = ''
-
-StrCMID = 0
-StrCMName_Tmp = ''
-StrCMTH = ''
-S1ReviewType = ''
-
-StrCMBSegment = ''
-StrGWISNo = ''
-StrCusName = ''
-
-Condcheck = False
-T0Record = False
-
-if S1R_Sub.shape[0] > 0:
-
-for sub_i, sub_Row in S1R_Sub.iterrows():
-
-#Condcheck = False
-#T0Record = False
-
-if sub_Row['S1 Master Status'] != '':
-
-TmpS1Statuscode = int(sub_Row['S1 Master Status'][:2])
-if TmpS1Statuscode == 40:
-T0Record = True
-#try:
-# TmpS1Statuscode = int(sub_Row['S1 Master Status'][:2])
-#except TypeError:
-# print(sub_i)
-# print(index)
-# print(sub_Row['S1 Master Status'])
-
-else:
-TmpS1Statuscode = 0
-#print('%s\t%d' % (sub_Row['S1 Master Status'], (TmpS1Statuscode)))
+    start = time.time()
+    #print(StaffList.columns.tolist())
+    if not 'Employee Number' in StaffList.columns.tolist():
+        StaffList['Employee Number'] = StaffList.index
+        StaffList = StaffList.reset_index(drop=True)
+
+    ImportedS1Col = ['S1 Report Date', 'Overall_Status_S1', 'T0 CM Name', 'T0 CM Team Head', 'T0',
+                    'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',
+                    'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities','Acceleration Case actual T0 date','Actual Review team(After CM assignment)']
+
+    S1RDate = []
+    S1Seg = []
+    S1Team = []
+    S1T0CMName = []
+    S1T0CMTH = []
+    S1T0CMStaffID = []
+    S1Act = []
+    S1GWIS = []
+    S1MstStatus = []
+    S1T0Date = []
+    S1T30ActDate =[]
+    S1T60ActDate =[]
+    S1KYCIActDate =[]
+    S1Remark = []
+    S1Type = []
+    S1AccelerationT0Date = []
+    S1CMTeam = []
+
+    checkID = ['X1630071']
+    checkID = ['']
+
+    iCount = 0
+
+    for index, row in MITemp_Copy.iterrows():
+        #print('Customer ID:\t%s\t%s'% (index, row['Old / Dummy CID']))
+        S1R_Sub = S1_Report_Ext[S1_Report_Ext['Customer_ID_S1'].isin([index])]
+        #print('No of S1 Record:\t%d' % S1R_Sub.shape[0])
+        if row['Old / Dummy CID'] != '':
+            Sel = S1_Report_Ext['Customer_ID_S1'].isin([row['Old / Dummy CID']])
+            #print('No of old ID record:\t%d' % np.sum(Sel))
+            if np.sum(Sel) > 0:
+                S1R_Sub02 = S1_Report_Ext[Sel]
+                #print(index)
+                #print(row['Old / Dummy CID'])
+                S1R_Sub = S1R_Sub.append(S1R_Sub02)
+                S1R_Sub = S1R_Sub.sort_values(by=['Date_of_Report_S1'], ascending=True)
+                #print(S1R_Sub)
+    #    if index in checkID:
+    #        print('No of S1 Record:\t%d' % S1R_Sub.shape[0])
+
+        TmpS1Statuscode = 0
+
+        StrOverallStatusS1 = '00'
+        StrS1Remark = ""
+        StrT0IssueDate = ""
+        StrActivities = ""
+        StrCMTeam = ""
+        TmpS1ReportDate = 0
+        TmpCMAssignDate = 0
+        TmpT0IssueDate = 0
+        TmpT30RmdLttrDate = 0
+        TmpT60RmdLttrDate = 0
+        TmpCurtLttrDate = 0
+
+        TmpAccelerationT0Date = ""
+
+        CanCode = ''
+        OldCanCode = ''
+
+        StrCMID = 0
+        StrCMName_Tmp = ''
+        StrCMTH = ''
+        S1ReviewType = ''
+
+        StrCMBSegment = ''
+        StrGWISNo = ''
+        StrCusName = ''
+
+        Condcheck = False
+        T0Record = False
+
+        if S1R_Sub.shape[0] > 0:
+
+            for sub_i, sub_Row in S1R_Sub.iterrows():
+
+                #Condcheck = False
+                #T0Record = False
+
+                if sub_Row['S1 Master Status'] != '':
+
+                    TmpS1Statuscode = int(sub_Row['S1 Master Status'][:2])
+                    if TmpS1Statuscode == 40:
+                        T0Record = True
+                    #try:
+                    #    TmpS1Statuscode = int(sub_Row['S1 Master Status'][:2])
+                    #except TypeError:
+                    #    print(sub_i)
+                    #    print(index)
+                    #    print(sub_Row['S1 Master Status'])
+
+                else:
+                    TmpS1Statuscode = 0
+                #print('%s\t%d' % (sub_Row['S1 Master Status'], (TmpS1Statuscode)))
 
-OldCanCode = CanCode
+                OldCanCode = CanCode
 
-if sub_Row['Cancellation Code'] != '':
-#print(CanCode)
-CanCode = sub_Row['Cancellation Code'][:5]
-else:
-CanCode = 0
+                if sub_Row['Cancellation Code'] != '':
+                    #print(CanCode)
+                    CanCode = sub_Row['Cancellation Code'][:5]
+                else:
+                    CanCode = 0
 
-if index in checkID:
-print("S1-01")
-print(StrOverallStatusS1)
-print(TmpS1Statuscode)
+                if index in checkID:
+                    print("S1-01")
+                    print(StrOverallStatusS1)
+                    print(TmpS1Statuscode)
 
-#if (int(StrOverallStatusS1[:2]) <= TmpS1Statuscode) and ((CanCode != '008-1')):
-if (int(StrOverallStatusS1[:2]) <= TmpS1Statuscode):
-#TmpS1Statuscode = int(sub_Row['S1 Master Status'][:2])
+                #if (int(StrOverallStatusS1[:2]) <= TmpS1Statuscode) and ((CanCode != '008-1')):
+                if (int(StrOverallStatusS1[:2]) <= TmpS1Statuscode):
+                    #TmpS1Statuscode = int(sub_Row['S1 Master Status'][:2])
 
-if (CanCode != '008-1') or (int(StrOverallStatusS1[:2]) == 0) or (CanCode == OldCanCode) :
-StrOverallStatusS1 = sub_Row['S1 Master Status']
-StrS1Remark = sub_Row['Remark_S1']
-StrCMID = sub_Row['Case_Manager_Staff_ID_S1']
-StrCMName_Tmp = sub_Row['Case_Manager_Email_S1']
-StrCMTH = sub_Row['Case_Manager_Team_Head']
-#StrActivities = sub_Row['Activities_S1']
-S1ReviewType = sub_Row['Type']
-
-StrCMBSegment = sub_Row['CMB_Segment_S1']
-StrGWISNo = sub_Row['GWIS_Number_S1']
-StrCusName = sub_Row['Customer_Name']
-StrCMTeam = sub_Row['Actual Review team(After CM assignment)']
-
-StrActivities = sub_Row['Activities_S1']
-
-#TmpAccelerationT0Date = sub_Row['Date_of_T+0_Issue_S1']
-
-
-if TmpS1Statuscode == 40:
-#if (not pd.isnull(sub_Row['Date_of_T+0_Issue_S1'])):
-#if (sub_Row['S1 Master Status'] == '40 - T0 initiated'):
-
-#if sub_Row['Acceleration Case actual T0 date'] != '':
-#TmpT0IssueDate = sub_Row['Acceleration Case actual T0 date']
-if ('Annual' not in sub_Row['Activities_S1']) and (sub_Row['CRT initiated date'] != ''):
-TmpT0IssueDate = sub_Row['CRT initiated date']
-else:
-TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
-else:
-TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
-
-if sub_Row['Acceleration Case actual T0 date'] != '':
-TmpAccelerationT0Date = sub_Row['Acceleration Case actual T0 date']
-else:
-TmpAccelerationT0Date = ''
-
-if (sub_Row['Date_of_Report_S1'] != ''):
-TmpS1ReportDate = sub_Row['Date_of_Report_S1']
-
-if (sub_Row['Date_of_T30_Physical_Letter (ACTUAL)'] != ''):
-TmpT30RmdLttrDate = sub_Row['Date_of_T30_Physical_Letter (ACTUAL)']
-
-if (sub_Row['Date_of_T60_Physical_Letter (ACTUAL)'] != ''):
-TmpT60RmdLttrDate = sub_Row['Date_of_T60_Physical_Letter (ACTUAL)']
-
-if (sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)'] != ''):
-TmpCurtLttrDate = sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)']
-pass
-
-
-
-else:
-
-Condcheck = ((TmpS1Statuscode > 32) or (TmpS1Statuscode < 30))
-
-#if index in checkID:
-
-# print(Condcheck)
-
-Condcheck = Condcheck and TmpS1Statuscode > 0
-#if index in checkID:
-# print(Condcheck)
-# print(pd.isnull(row['QVClosedAPP-Approval/Cancel Date']))
-# print(row['Last KYC Date'])
-
-
-
-LastKYCDate = DT.datetime(2015, 1, 1, 0, 0)
-CancelDate = DT.datetime(2015, 1, 1, 0, 0)
-
-if (not pd.isnull(row['QVClosedCAN-Approval/Cancel Date'])):
-CancelDate = row['QVClosedCAN-Approval/Cancel Date']
-
-
-if (not pd.isnull(row['QVClosedAPP-Approval/Cancel Date'])) and (not pd.isnull(row['Last KYC Date'])):
-
-if row['QVClosedAPP-Approval/Cancel Date'] >= row['Last KYC Date']:
-LastKYCDate = row['QVClosedAPP-Approval/Cancel Date']
-# if index in checkID:
-# print("A1")
-else:
-LastKYCDate = row['Last KYC Date']
-# if index in checkID:
-# print("A2")
-elif (pd.isnull(row['QVClosedAPP-Approval/Cancel Date'])) and (pd.isnull(row['Last KYC Date'])):
-LastKYCDate = DT.datetime(2015, 1, 1, 0, 0)
-# if index in checkID:
-# print("B")
-elif (pd.isnull(row['QVClosedAPP-Approval/Cancel Date'])) and (not pd.isnull(row['Last KYC Date'])):
-LastKYCDate = row['Last KYC Date']
-# if index in checkID:
-# print("C")
-else:
-LastKYCDate = row['QVClosedAPP-Approval/Cancel Date']
-# if index in checkID:
-# print("D")
-
-# Condcheck = Condcheck and (sub_Row['Date_of_Report_S1'] > LastKYCDate)
-# if index in checkID:
-# print('*****')
-# print(sub_Row['Date_of_Report_S1'] )
-# print(LastKYCDate)
-# print(Condcheck)
-#### if (LastKYCDate < TmpT0IssueDate):
-#### Condcheck = False
-
-if (TmpS1ReportDate == sub_Row['Date_of_Report_S1']):
-if ((StrOverallStatusS1[0] == '3') and (StrOverallStatusS1[:2] != '39')):
-Condcheck = True
-if (StrOverallStatusS1[0] == '4'):
-Condcheck = False
-
-# Only get 'to be start' status for case completed / cancelled
-if LastKYCDate > TmpS1ReportDate or ((CancelDate > TmpS1ReportDate) and ('008-5' not in row['QVClosedCAN-Cancellation Comments'])):
-pass
-else:
-if T0Record == False:
-# Condcheck = True
-pass
-else:
-Condcheck = False
-
-
-if Condcheck:
-StrOverallStatusS1 = sub_Row['S1 Master Status']
-StrS1Remark = sub_Row['Remark_S1']
-StrCMID = sub_Row['Case_Manager_Staff_ID_S1']
-StrCMName_Tmp = sub_Row['Case_Manager_Email_S1']
-StrCMTH = sub_Row['Case_Manager_Team_Head']
-#StrActivities = sub_Row['Activities_S1']
-S1ReviewType = sub_Row['Type']
-
-StrCMBSegment = sub_Row['CMB_Segment_S1']
-StrGWISNo = sub_Row['GWIS_Number_S1']
-StrCusName = sub_Row['Customer_Name']
-StrCMTeam = sub_Row['Actual Review team(After CM assignment)']
-
-StrActivities = sub_Row['Activities_S1']
-
-#TmpAccelerationT0Date = sub_Row['Date_of_T+0_Issue_S1']
-
-# if index in checkID:
-# print(sub_Row['Date_of_T+0_Issue_S1'])
-if TmpS1Statuscode == 40:
-#if (not pd.isnull(sub_Row['Date_of_T+0_Issue_S1'])):
-#if (sub_Row['S1 Master Status'] == '40 - T0 initiated'):
-
-#if sub_Row['Acceleration Case actual T0 date'] != '':
-#TmpT0IssueDate = sub_Row['Acceleration Case actual T0 date']
-if ('Annual' not in sub_Row['Activities_S1']) and (sub_Row['CRT initiated date'] != ''):
-TmpT0IssueDate = sub_Row['CRT initiated date']
-else:
-TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
-else:
-TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
-
-if sub_Row['Acceleration Case actual T0 date'] != '':
-TmpAccelerationT0Date = sub_Row['Acceleration Case actual T0 date']
-else:
-TmpAccelerationT0Date = ''
-
-if (sub_Row['Date_of_Report_S1'] != ''):
-TmpS1ReportDate = sub_Row['Date_of_Report_S1']
-
-if (sub_Row['Date_of_T30_Physical_Letter (ACTUAL)'] != ''):
-TmpT30RmdLttrDate = sub_Row['Date_of_T30_Physical_Letter (ACTUAL)']
-
-if (sub_Row['Date_of_T60_Physical_Letter (ACTUAL)'] != ''):
-TmpT60RmdLttrDate = sub_Row['Date_of_T60_Physical_Letter (ACTUAL)']
-
-if (sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)'] != ''):
-TmpCurtLttrDate = sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)']
-pass
-#if index in checkID:
-# if len(index) < 8:
-# print("Result:\t%s\t\t%s" % (index, StrOverallStatusS1))
-# else:
-# print("Result:\t%s\t%s" % (index, StrOverallStatusS1))
-
-pass
-
-# if sub_Row['Customer_ID_S1'] == "C1388292":
-# print (Condcheck)
-# print (sub_Row['Customer_ID_S1'], sub_Row['Date_of_Report_S1'], sub_Row['Case_Manager_Email_S1'], sub_Row['Case_Manager_Team_Head'], sub_Row['Activities_S1'], sub_Row['S1 Master Status'], sub_Row['Date_of_T+0_Issue_S1'])
-# print (LastKYCDate, CancelDate, TmpS1ReportDate, row['QVClosedCAN-Cancellation Comments'])
-#print("Result:\t%s\t\t%s" % (index, StrOverallStatusS1))
-if index in checkID:
-if len(index) < 8:
-print("Result:\t%s\t\t%s" % (index, StrOverallStatusS1))
-else:
-print("Result:\t%s\t%s" % (index, StrOverallStatusS1))
-
-
-# Import to Array first Master MI
-
-if StrOverallStatusS1 == '00':
-StrOverallStatusS1 = ''
-StrS1Remark = ''
-StrT0IssueDate = ''
-StrActivities = ''
-TmpS1ReportDate = ''
-TmpCMAssignDate = ''
-TmpT0IssueDate = ''
-TmpT30RmdLttrDate = ''
-TmpT60RmdLttrDate = ''
-TmpCurtLttrDate = ''
-TmpAccelerationT0Date = ''
-
-StrCMID = ''
-StrCMName_Tmp = ''
-StrCMTH = ''
-S1ReviewType = ''
-StrCMName = ''
-StrCMBSegment = ''
-StrGWISNo = ''
-StrCusName = ''
-StrCMTeam = ''
-pass
-else:
-#print((TmpT0IssueDate))
-#print(pd.isnull(TmpT0IssueDate))
-
-# if pd.isnull(TmpT0IssueDate):
-# #print(index)
-# maxID = S1R_Sub['Date_of_T+0_Issue_S1'].idxmax()
-# #print(maxID)
-# if not pd.isnull(maxID):
-# if (StrCMID == '' or pd.isnull(StrCMID) or StrCMID == ' '):
-# StrCMID = S1R_Sub.loc[maxID, 'Case_Manager_Staff_ID_S1']
-# StrCMName_Tmp = S1R_Sub.loc[maxID, 'Case_Manager_Email_S1']
-# StrCMTH = S1R_Sub.loc[maxID, 'Case_Manager_Team_Head']
-# if S1R_Sub.loc[maxID, 'Acceleration Case actual T0 date'] != '' and S1R_Sub.loc[maxID, 'S1 Master Status'] == '40 - T0 initiated':
-# TmpT0IssueDate = S1R_Sub.loc[maxID, 'Acceleration Case actual T0 date']
-# elif ('Annual' not in S1R_Sub.loc[maxID, 'Activities_S1']) and (S1R_Sub.loc[maxID, 'CRT initiated date'] != ''):
-# TmpT0IssueDate = S1R_Sub.loc[maxID, 'CRT initiated date']
-# else:
-# TmpT0IssueDate = S1R_Sub.loc[maxID, 'Date_of_T+0_Issue_S1']
-# StrActivities = S1R_Sub.loc[maxID, 'Activities_S1']
-# TmpT30RmdLttrDate = S1R_Sub.loc[maxID, 'Date_of_T30_Physical_Letter (ACTUAL)']
-# TmpT60RmdLttrDate = S1R_Sub.loc[maxID, 'Date_of_T60_Physical_Letter (ACTUAL)']
-# TmpCurtLttrDate = S1R_Sub.loc[maxID, 'KYCI Curtailment Letter Issue Date (ACTUAL)']
-# S1ReviewType = S1R_Sub.loc[maxID, 'Type']
-# StrGWISNo = S1R_Sub.loc[maxID, 'GWIS_Number_S1']
-# #print(TmpT0IssueDate)
-# #print('================================')
-# pass
-
-#print(StrCMID)
-#print(type(StrCMID))
-#print(S1_Report_Ext['Customer_ID_S1'].tolist()[0])
-if (not pd.isnull(StrCMID)) :
-# if (not np.isnan(StrCMID)) :
-# print(StrCMID)
-try:
-SelCMName = (StaffList['Employee Number'] == StrCMID)
-except:
-SelCMName = (StaffList['Employee Number'] == int(StrCMID))
-if np.sum(SelCMName) > 0:
-#print(index)
-#print(StaffList['Employee Name'][SelCMName].tolist()[0])
-StrCMName = StaffList['Employee Name'][SelCMName].tolist()[0]
-elif StrCMName_Tmp != '':
-StrCMName = StrCMName_Tmp
-else:
-StrCMName = ''
-else:
-StrCMName = ''
-
-pass
-
-S1RDate.append(TmpS1ReportDate)
-#S1Seg = []
-#S1Team = []
-S1T0CMName.append(StrCMName)
-S1T0CMStaffID.append(StrCMID)
-S1T0CMTH.append(StrCMTH)
-S1Act.append(StrActivities)
-S1GWIS.append(StrGWISNo)
-S1MstStatus.append(StrOverallStatusS1)
-S1T0Date.append(TmpT0IssueDate)
-S1T30ActDate.append(TmpT30RmdLttrDate)
-S1T60ActDate.append(TmpT60RmdLttrDate)
-S1KYCIActDate.append(TmpCurtLttrDate)
-S1Remark.append(StrS1Remark)
-S1Type.append(S1ReviewType)
-S1AccelerationT0Date.append(TmpAccelerationT0Date)
-S1CMTeam.append(StrCMTeam)
-
-
-
-
-
-iCount += 1
-#print(iCount)
-#print(len(S1RDate))
-if len(S1RDate) != iCount:
-print(index)
-
-
-#print(S1R_Sub)
-#if iCount > 100:
-# break
-pass
-
-MITemp_Copy['S1 Report Date'] = S1RDate
-MITemp_Copy['T0 CM Name'] = S1T0CMName
-MITemp_Copy['T0 CM Team Head'] = S1T0CMTH
-MITemp_Copy['Activities'] = S1Act
-MITemp_Copy['GWIS_Number'] = S1GWIS
-MITemp_Copy['T0'] = S1T0Date
-MITemp_Copy['T30 Rmdr Letter date (Actual)'] = S1T30ActDate
-MITemp_Copy['T60 Rmdr Letter date (Actual)'] = S1T60ActDate
-MITemp_Copy['KYCI Curt Letter issue date (Actual)'] = S1KYCIActDate
-MITemp_Copy['S1 Remark'] = S1Remark
-MITemp_Copy['S1 Review Type'] = S1Type
-MITemp_Copy['Overall_Status_S1'] = S1MstStatus
-MITemp_Copy['Acceleration T0 Date'] = S1AccelerationT0Date
-MITemp_Copy['S1 CM Team'] = S1CMTeam
-
-print('Completed %d cases.' % iCount)
-stop = time.time()
-TimeSpent(start, stop)
-return MITemp_Copy.reset_index()
+                    if (CanCode != '008-1') or (int(StrOverallStatusS1[:2]) == 0) or (CanCode == OldCanCode) :
+                        StrOverallStatusS1 = sub_Row['S1 Master Status']
+                        StrS1Remark = sub_Row['Remark_S1']
+                        StrCMID = sub_Row['Case_Manager_Staff_ID_S1']
+                        StrCMName_Tmp = sub_Row['Case_Manager_Email_S1']
+                        StrCMTH = sub_Row['Case_Manager_Team_Head']
+                        #StrActivities = sub_Row['Activities_S1']
+                        S1ReviewType = sub_Row['Type']
+
+                        StrCMBSegment = sub_Row['CMB_Segment_S1']
+                        StrGWISNo = sub_Row['GWIS_Number_S1']
+                        StrCusName = sub_Row['Customer_Name']
+                        StrCMTeam = sub_Row['Actual Review team(After CM assignment)']
+
+                        StrActivities = sub_Row['Activities_S1']
+
+                        #TmpAccelerationT0Date = sub_Row['Date_of_T+0_Issue_S1']
+
+
+                        if TmpS1Statuscode == 40:
+                        #if (not pd.isnull(sub_Row['Date_of_T+0_Issue_S1'])):
+                        #if (sub_Row['S1 Master Status'] == '40 - T0 initiated'):
+
+                            #if sub_Row['Acceleration Case actual T0 date'] != '':
+                                #TmpT0IssueDate = sub_Row['Acceleration Case actual T0 date']
+                            if ('Annual' not in sub_Row['Activities_S1']) and (sub_Row['CRT initiated date'] != ''):
+                                TmpT0IssueDate = sub_Row['CRT initiated date']
+                            else:
+                                TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
+                        else:
+                            TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
+
+                        if sub_Row['Acceleration Case actual T0 date'] != '':
+                            TmpAccelerationT0Date = sub_Row['Acceleration Case actual T0 date']
+                        else:
+                            TmpAccelerationT0Date = ''
+
+                        if (sub_Row['Date_of_Report_S1'] != ''):
+                            TmpS1ReportDate = sub_Row['Date_of_Report_S1']
+
+                        if (sub_Row['Date_of_T30_Physical_Letter (ACTUAL)'] != ''):
+                            TmpT30RmdLttrDate = sub_Row['Date_of_T30_Physical_Letter (ACTUAL)']
+
+                        if (sub_Row['Date_of_T60_Physical_Letter (ACTUAL)'] != ''):
+                            TmpT60RmdLttrDate = sub_Row['Date_of_T60_Physical_Letter (ACTUAL)']
+
+                        if (sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)'] != ''):
+                            TmpCurtLttrDate = sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)']
+                        pass
+
+
+
+                else:
+
+                    Condcheck = ((TmpS1Statuscode > 32) or (TmpS1Statuscode < 30))
+
+                    #if index in checkID:
+
+                    #    print(Condcheck)
+
+                    Condcheck = Condcheck and TmpS1Statuscode > 0
+                    #if index in checkID:
+                    #    print(Condcheck)
+                    #    print(pd.isnull(row['QVClosedAPP-Approval/Cancel Date']))
+                    #    print(row['Last KYC Date'])
+
+
+
+                    LastKYCDate = DT.datetime(2015, 1, 1, 0, 0)
+                    CancelDate = DT.datetime(2015, 1, 1, 0, 0)
+
+                    if (not pd.isnull(row['QVClosedCAN-Approval/Cancel Date'])):
+                        CancelDate = row['QVClosedCAN-Approval/Cancel Date']
+
+
+                    if (not pd.isnull(row['QVClosedAPP-Approval/Cancel Date'])) and (not pd.isnull(row['Last KYC Date'])):
+
+                        if row['QVClosedAPP-Approval/Cancel Date'] >= row['Last KYC Date']:
+                            LastKYCDate = row['QVClosedAPP-Approval/Cancel Date']
+    #                        if index in checkID:
+    #                            print("A1")
+                        else:
+                            LastKYCDate = row['Last KYC Date']
+    #                        if index in checkID:
+    #                            print("A2")
+                    elif (pd.isnull(row['QVClosedAPP-Approval/Cancel Date'])) and (pd.isnull(row['Last KYC Date'])):
+                        LastKYCDate = DT.datetime(2015, 1, 1, 0, 0)
+    #                    if index in checkID:
+    #                        print("B")
+                    elif (pd.isnull(row['QVClosedAPP-Approval/Cancel Date'])) and (not pd.isnull(row['Last KYC Date'])):
+                        LastKYCDate = row['Last KYC Date']
+    #                    if index in checkID:
+    #                        print("C")
+                    else:
+                        LastKYCDate = row['QVClosedAPP-Approval/Cancel Date']
+    #                    if index in checkID:
+    #                        print("D")
+
+#                     Condcheck = Condcheck and (sub_Row['Date_of_Report_S1'] > LastKYCDate)
+    #                if index in checkID:
+    #                    print('*****')
+    #                    print(sub_Row['Date_of_Report_S1'] )
+    #                    print(LastKYCDate)
+    #                    print(Condcheck)
+####                    if (LastKYCDate < TmpT0IssueDate):
+####                        Condcheck = False
+
+                    if (TmpS1ReportDate == sub_Row['Date_of_Report_S1']):
+                        if ((StrOverallStatusS1[0] == '3') and (StrOverallStatusS1[:2] != '39')):
+                            Condcheck = True
+                        if (StrOverallStatusS1[0] == '4'):
+                            Condcheck = False
+
+                    # Only get 'to be start' status for case completed / cancelled
+                    if LastKYCDate > TmpS1ReportDate or ((CancelDate > TmpS1ReportDate) and ('008-5' not in row['QVClosedCAN-Cancellation Comments'])):
+                        pass
+                    else:
+                        if T0Record == False:
+                            # Condcheck = True
+                            pass
+                        else:
+                            Condcheck = False
+
+
+                    if Condcheck:
+                        StrOverallStatusS1 = sub_Row['S1 Master Status']
+                        StrS1Remark = sub_Row['Remark_S1']
+                        StrCMID = sub_Row['Case_Manager_Staff_ID_S1']
+                        StrCMName_Tmp = sub_Row['Case_Manager_Email_S1']
+                        StrCMTH = sub_Row['Case_Manager_Team_Head']
+                        #StrActivities = sub_Row['Activities_S1']
+                        S1ReviewType = sub_Row['Type']
+
+                        StrCMBSegment = sub_Row['CMB_Segment_S1']
+                        StrGWISNo = sub_Row['GWIS_Number_S1']
+                        StrCusName = sub_Row['Customer_Name']
+                        StrCMTeam = sub_Row['Actual Review team(After CM assignment)']
+
+                        StrActivities = sub_Row['Activities_S1']
+
+                        #TmpAccelerationT0Date = sub_Row['Date_of_T+0_Issue_S1']
+
+    #                    if index in checkID:
+    #                        print(sub_Row['Date_of_T+0_Issue_S1'])
+                        if TmpS1Statuscode == 40:
+                        #if (not pd.isnull(sub_Row['Date_of_T+0_Issue_S1'])):
+                        #if (sub_Row['S1 Master Status'] == '40 - T0 initiated'):
+
+                            #if sub_Row['Acceleration Case actual T0 date'] != '':
+                                #TmpT0IssueDate = sub_Row['Acceleration Case actual T0 date']
+                            if ('Annual' not in sub_Row['Activities_S1']) and (sub_Row['CRT initiated date'] != ''):
+                                TmpT0IssueDate = sub_Row['CRT initiated date']
+                            else:
+                                TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
+                        else:
+                            TmpT0IssueDate = sub_Row['Date_of_T+0_Issue_S1']
+
+                        if sub_Row['Acceleration Case actual T0 date'] != '':
+                            TmpAccelerationT0Date = sub_Row['Acceleration Case actual T0 date']
+                        else:
+                            TmpAccelerationT0Date = ''
+
+                        if (sub_Row['Date_of_Report_S1'] != ''):
+                            TmpS1ReportDate = sub_Row['Date_of_Report_S1']
+
+                        if (sub_Row['Date_of_T30_Physical_Letter (ACTUAL)'] != ''):
+                            TmpT30RmdLttrDate = sub_Row['Date_of_T30_Physical_Letter (ACTUAL)']
+
+                        if (sub_Row['Date_of_T60_Physical_Letter (ACTUAL)'] != ''):
+                            TmpT60RmdLttrDate = sub_Row['Date_of_T60_Physical_Letter (ACTUAL)']
+
+                        if (sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)'] != ''):
+                            TmpCurtLttrDate = sub_Row['KYCI Curtailment Letter Issue Date (ACTUAL)']
+                    pass
+                #if index in checkID:
+                #    if len(index) < 8:
+                #        print("Result:\t%s\t\t%s" % (index, StrOverallStatusS1))
+                #    else:
+                #        print("Result:\t%s\t%s" % (index, StrOverallStatusS1))
+
+                pass
+
+#                 if sub_Row['Customer_ID_S1'] == "C1388292":
+#                     print (Condcheck)
+#                     print (sub_Row['Customer_ID_S1'], sub_Row['Date_of_Report_S1'], sub_Row['Case_Manager_Email_S1'], sub_Row['Case_Manager_Team_Head'], sub_Row['Activities_S1'], sub_Row['S1 Master Status'], sub_Row['Date_of_T+0_Issue_S1'])
+#                     print (LastKYCDate, CancelDate, TmpS1ReportDate, row['QVClosedCAN-Cancellation Comments'])
+            #print("Result:\t%s\t\t%s" % (index, StrOverallStatusS1))
+            if index in checkID:
+                if len(index) < 8:
+                    print("Result:\t%s\t\t%s" % (index, StrOverallStatusS1))
+                else:
+                    print("Result:\t%s\t%s" % (index, StrOverallStatusS1))
+
+
+            # Import to Array first Master MI
+
+        if StrOverallStatusS1 == '00':
+            StrOverallStatusS1 = ''
+            StrS1Remark = ''
+            StrT0IssueDate = ''
+            StrActivities = ''
+            TmpS1ReportDate = ''
+            TmpCMAssignDate = ''
+            TmpT0IssueDate = ''
+            TmpT30RmdLttrDate = ''
+            TmpT60RmdLttrDate = ''
+            TmpCurtLttrDate = ''
+            TmpAccelerationT0Date = ''
+
+            StrCMID = ''
+            StrCMName_Tmp = ''
+            StrCMTH = ''
+            S1ReviewType = ''
+            StrCMName = ''
+            StrCMBSegment = ''
+            StrGWISNo = ''
+            StrCusName = ''
+            StrCMTeam = ''
+            pass
+        else:
+            #print((TmpT0IssueDate))
+            #print(pd.isnull(TmpT0IssueDate))
+
+#             if pd.isnull(TmpT0IssueDate):
+#                 #print(index)
+#                 maxID = S1R_Sub['Date_of_T+0_Issue_S1'].idxmax()
+#                 #print(maxID)
+#                 if not pd.isnull(maxID):
+#                     if (StrCMID == '' or pd.isnull(StrCMID) or StrCMID == ' '):
+#                         StrCMID = S1R_Sub.loc[maxID, 'Case_Manager_Staff_ID_S1']
+#                         StrCMName_Tmp = S1R_Sub.loc[maxID, 'Case_Manager_Email_S1']
+#                         StrCMTH = S1R_Sub.loc[maxID, 'Case_Manager_Team_Head']
+#                     if S1R_Sub.loc[maxID, 'Acceleration Case actual T0 date'] != '' and S1R_Sub.loc[maxID, 'S1 Master Status'] == '40 - T0 initiated':
+#                         TmpT0IssueDate = S1R_Sub.loc[maxID, 'Acceleration Case actual T0 date']
+#                     elif ('Annual' not in S1R_Sub.loc[maxID, 'Activities_S1']) and (S1R_Sub.loc[maxID, 'CRT initiated date'] != ''):
+#                         TmpT0IssueDate = S1R_Sub.loc[maxID, 'CRT initiated date']
+#                     else:
+#                         TmpT0IssueDate = S1R_Sub.loc[maxID, 'Date_of_T+0_Issue_S1']
+#                     StrActivities = S1R_Sub.loc[maxID, 'Activities_S1']
+#                     TmpT30RmdLttrDate = S1R_Sub.loc[maxID, 'Date_of_T30_Physical_Letter (ACTUAL)']
+#                     TmpT60RmdLttrDate = S1R_Sub.loc[maxID, 'Date_of_T60_Physical_Letter (ACTUAL)']
+#                     TmpCurtLttrDate = S1R_Sub.loc[maxID, 'KYCI Curtailment Letter Issue Date (ACTUAL)']
+#                     S1ReviewType = S1R_Sub.loc[maxID, 'Type']
+#                     StrGWISNo = S1R_Sub.loc[maxID, 'GWIS_Number_S1']
+#                     #print(TmpT0IssueDate)
+#                 #print('================================')
+#                 pass
+
+            #print(StrCMID)
+            #print(type(StrCMID))
+            #print(S1_Report_Ext['Customer_ID_S1'].tolist()[0])
+            if (not pd.isnull(StrCMID)) :
+#             if (not np.isnan(StrCMID)) :
+#                 print(StrCMID)
+                try:
+                    SelCMName = (StaffList['Employee Number'] == StrCMID)
+                except:
+                    SelCMName = (StaffList['Employee Number'] == int(StrCMID))
+                if np.sum(SelCMName) > 0:
+                    #print(index)
+                    #print(StaffList['Employee Name'][SelCMName].tolist()[0])
+                    StrCMName = StaffList['Employee Name'][SelCMName].tolist()[0]
+                elif StrCMName_Tmp != '':
+                    StrCMName = StrCMName_Tmp
+                else:
+                    StrCMName = ''
+            else:
+                StrCMName = ''
+
+            pass
+
+        S1RDate.append(TmpS1ReportDate)
+        #S1Seg = []
+        #S1Team = []
+        S1T0CMName.append(StrCMName)
+        S1T0CMStaffID.append(StrCMID)
+        S1T0CMTH.append(StrCMTH)
+        S1Act.append(StrActivities)
+        S1GWIS.append(StrGWISNo)
+        S1MstStatus.append(StrOverallStatusS1)
+        S1T0Date.append(TmpT0IssueDate)
+        S1T30ActDate.append(TmpT30RmdLttrDate)
+        S1T60ActDate.append(TmpT60RmdLttrDate)
+        S1KYCIActDate.append(TmpCurtLttrDate)
+        S1Remark.append(StrS1Remark)
+        S1Type.append(S1ReviewType)
+        S1AccelerationT0Date.append(TmpAccelerationT0Date)
+        S1CMTeam.append(StrCMTeam)
+
+
+
+
+
+        iCount += 1
+        #print(iCount)
+        #print(len(S1RDate))
+        if len(S1RDate) != iCount:
+            print(index)
+
+
+        #print(S1R_Sub)
+        #if iCount > 100:
+        #    break
+        pass
+
+    MITemp_Copy['S1 Report Date'] = S1RDate
+    MITemp_Copy['T0 CM Name'] = S1T0CMName
+    MITemp_Copy['T0 CM Team Head'] = S1T0CMTH
+    MITemp_Copy['Activities'] = S1Act
+    MITemp_Copy['GWIS_Number'] = S1GWIS
+    MITemp_Copy['T0'] = S1T0Date
+    MITemp_Copy['T30 Rmdr Letter date (Actual)'] = S1T30ActDate
+    MITemp_Copy['T60 Rmdr Letter date (Actual)'] = S1T60ActDate
+    MITemp_Copy['KYCI Curt Letter issue date (Actual)'] = S1KYCIActDate
+    MITemp_Copy['S1 Remark'] = S1Remark
+    MITemp_Copy['S1 Review Type'] = S1Type
+    MITemp_Copy['Overall_Status_S1'] = S1MstStatus
+    MITemp_Copy['Acceleration T0 Date'] = S1AccelerationT0Date
+    MITemp_Copy['S1 CM Team'] = S1CMTeam
+
+    print('Completed %d cases.' % iCount)
+    stop = time.time()
+    TimeSpent(start, stop)
+    return MITemp_Copy.reset_index()
 
 
 
@@ -1452,11 +1452,11 @@ VC_CID = MIWsR['Customer ID'].value_counts()
 SelDuCID = VC_CID > 1
 
 if np.sum(SelDuCID) > 0:
-print('Duplicated Customer ID record were found!')
-print(VC_CID[SelDuCID])
+    print('Duplicated Customer ID record were found!')
+    print(VC_CID[SelDuCID])
 
 else:
-print('No Duplicated Customer ID!')
+    print('No Duplicated Customer ID!')
 
 print('\n')
 
@@ -1464,10 +1464,10 @@ VC_CID = MIWsR['CIN'].value_counts()
 SelDuCID = VC_CID > 1
 
 if np.sum(SelDuCID) > 0:
-print('Duplicated CIN record were found!')
-print(VC_CID[SelDuCID])
+    print('Duplicated CIN record were found!')
+    print(VC_CID[SelDuCID])
 else:
-print('No Duplicated CIN!')
+    print('No Duplicated CIN!')
 
 
 # ## Treatment on importing data based on old Customer ID
@@ -1487,9 +1487,9 @@ MIWs01['MI Seq'] = MIWs01.index
 MIWs01_OldCI = MIWs01.copy(deep = True)
 Sel01 = np.logical_not(MIWs01_OldCI['Old / Dummy CID'].isnull())
 if np.sum(Sel01) > 0:
-Sel02 = MIWs01_OldCI['Old / Dummy CID'] != 'both CI and CIN are dummy inf.'
-Sel = np.logical_and(Sel01, Sel02)
-MIWs01_OldCI = MIWs01_OldCI[Sel]
+    Sel02 = MIWs01_OldCI['Old / Dummy CID'] != 'both CI and CIN are dummy inf.'
+    Sel = np.logical_and(Sel01, Sel02)
+    MIWs01_OldCI = MIWs01_OldCI[Sel]
 
 
 # The below is for checking the Old CI record is match with MIWs01.
@@ -1503,19 +1503,19 @@ t02 = MIWs01_OldCI['Customer ID'].tolist()
 fc = 0
 nfc = 0
 for a in t01:
-if a in t02:
-fc += 1
-pass
-else:
-nfc += 1
-print(a + ' is not found.')
+    if a in t02:
+        fc += 1
+        pass
+    else:
+        nfc += 1
+        print(a + ' is not found.')
 
 if nfc > 0 :
-print("Please check Old Customer ID.")
-print('%d record unmatched.' % nfc)
+    print("Please check Old Customer ID.")
+    print('%d record unmatched.' % nfc)
 else:
-print('Checked %d cases.' % fc)
-print('No unmatched record.')
+    print('Checked %d cases.' % fc)
+    print('No unmatched record.')
 
 wError = 0
 
@@ -1532,9 +1532,9 @@ MIWs01['MI Seq'] = MIWs01.index
 MIWs01_OldCI = MIWs01.copy(deep = True)
 Sel01 = np.logical_not(MIWs01_OldCI['Old / Dummy CID'].isnull())
 if np.sum(Sel01) > 0:
-Sel02 = MIWs01_OldCI['Old / Dummy CID'] != 'both CI and CIN are dummy inf.'
-Sel = np.logical_and(Sel01, Sel02)
-MIWs01_OldCI = MIWs01_OldCI[Sel]
+    Sel02 = MIWs01_OldCI['Old / Dummy CID'] != 'both CI and CIN are dummy inf.'
+    Sel = np.logical_and(Sel01, Sel02)
+    MIWs01_OldCI = MIWs01_OldCI[Sel]
 OID_ID = MIWs01_OldCI.index.tolist()
 t01 = MIWs01.iloc[OID_ID]['Customer ID'].tolist()
 t02 = MIWs01_OldCI['Customer ID'].tolist()
@@ -1544,19 +1544,19 @@ nfc = 0
 StaffList = StaffList_c.copy(deep=True)
 
 for a in t01:
-if a in t02:
-fc += 1
-pass
-else:
-nfc += 1
-print(a + ' is not found.')
+    if a in t02:
+        fc += 1
+        pass
+    else:
+        nfc += 1
+        print(a + ' is not found.')
 
 if nfc > 0 :
-print("Please check Old Customer ID.")
-print('%d record unmatched.' % nfc)
+    print("Please check Old Customer ID.")
+    print('%d record unmatched.' % nfc)
 else:
-print('Checked %d cases.' % fc)
-print('No unmatched record.')
+    print('Checked %d cases.' % fc)
+    print('No unmatched record.')
 
 wError = 0
 
@@ -1594,36 +1594,36 @@ wError = 0
 # ColumnsToDrop = ['CM2-T90 Letter Issue Arrangement', 'CM2-T90 Letter - Not issue Remarks']
 # for aFile in Files:
 
-# if aFile[-5:] == '.xlsx' or aFile[-5:] == '.xlsm':
+#     if aFile[-5:] == '.xlsx' or aFile[-5:] == '.xlsm':
 
-# if 'CM_Tracker_' in aFile:
-# print("This is a CM Tracker:\t" + aFile)
-# tmpDF = pd.read_excel('./' + aFile, sheetname='GSCDD CMTracker')
-# tmpDF['T0'] = pd.to_datetime(tmpDF['T0'], errors='coerce')
-# tmpDF = tmpDF.sort_values(by=['T0'], ascending=False)
-# tmpDF = tmpDF.drop_duplicates(subset='Customer ID', keep='first')
-# tmpColumnList = tmpDF.columns.tolist()
+#         if 'CM_Tracker_' in aFile:
+#             print("This is a CM Tracker:\t" + aFile)
+#             tmpDF = pd.read_excel('./' + aFile, sheetname='GSCDD CMTracker')
+#             tmpDF['T0'] = pd.to_datetime(tmpDF['T0'], errors='coerce')
+#             tmpDF = tmpDF.sort_values(by=['T0'], ascending=False)
+#             tmpDF =  tmpDF.drop_duplicates(subset='Customer ID', keep='first')
+#             tmpColumnList = tmpDF.columns.tolist()
 
-# for aCol in ColumnsToDrop:
-# if aCol in tmpColumnList:
-# tmpDF = tmpDF.drop(aCol, axis=1)
-# else:
-# if 'DATE' in aCol.upper():
-# tmpDF[aCol] = pd.to_datetime(tmpDF[aCol], errors='coerce')
-# elif 'All Doc Received'.upper() in aCol.upper():
-# tmpDF[aCol] = tmpDF[aCol].replace(0, False)
-# tmpDF[aCol] = tmpDF[aCol].replace(1, True)
-# tmpDF[aCol] = tmpDF[aCol].astype('bool')
-# tmpDF['CM Team Head'] = CMTkr_FileIndex[aFile.split('_')[2].split('-')[0].split('.')[0]]
-# CMTkrs.append(tmpDF)
-# CMTkrs[len(CMTkrs) -1].name = aFile
+#             for aCol in ColumnsToDrop:
+#                 if aCol in tmpColumnList:
+#                     tmpDF = tmpDF.drop(aCol, axis=1)
+#                 else:
+#                     if 'DATE' in aCol.upper():
+#                         tmpDF[aCol] = pd.to_datetime(tmpDF[aCol], errors='coerce')
+#                     elif 'All Doc Received'.upper() in aCol.upper():
+#                         tmpDF[aCol] = tmpDF[aCol].replace(0, False)
+#                         tmpDF[aCol] = tmpDF[aCol].replace(1, True)
+#                         tmpDF[aCol] = tmpDF[aCol].astype('bool')
+#             tmpDF['CM Team Head'] = CMTkr_FileIndex[aFile.split('_')[2].split('-')[0].split('.')[0]]
+#             CMTkrs.append(tmpDF)
+#             CMTkrs[len(CMTkrs) -1].name = aFile
 
 
-# else:
-# print("Skipped:\t%s" % aFile)
+#         else:
+#             print("Skipped:\t%s" % aFile)
 
-# else:
-# print("This is not an Excel File:\t" + aFile)
+#     else:
+#         print("This is not an Excel File:\t" + aFile)
 # print('\nLoaded %d CM Tracker to Memory.\n' % len(CMTkrs))
 
 
@@ -1634,11 +1634,11 @@ wError = 0
 # ####### Update Using Customer ID
 
 # for aCMTrk in CMTkrs:
-# print('Importing:\t%s' % aCMTrk.name)
-# MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, aCMTrk, ImType='CM2', InColM='Old / Dummy CID', InColS='Customer ID', ImMethod=1)
-# MIWs01 = ImportData(MIWs01, aCMTrk, ImType='CM2', InColM='Customer ID', InColS='Customer ID', ImMethod=1)[0]
-# MIWs01 = Merge_MI_MIOID(MIWs01, MIWs01_OldCI, 0, LTitle)
-# ImportedList += LTitle
+#     print('Importing:\t%s' % aCMTrk.name)
+#     MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, aCMTrk, ImType='CM2', InColM='Old / Dummy CID', InColS='Customer ID', ImMethod=1)
+#     MIWs01  = ImportData(MIWs01, aCMTrk, ImType='CM2', InColM='Customer ID', InColS='Customer ID', ImMethod=1)[0]
+#     MIWs01 = Merge_MI_MIOID(MIWs01, MIWs01_OldCI, 0, LTitle)
+#     ImportedList += LTitle
 # ImportedList = list(set(ImportedList))
 
 
@@ -1646,14 +1646,14 @@ wError = 0
 
 
 # for aCol in ImportedList:
-# if aCol != 'MI Seq':
-# print(aCol)
-# if 'DATE' in aCol.upper():
-# MIWs01[aCol] = pd.to_datetime(MIWs01[aCol], errors='coerce')
-# # elif 'DAYS' in aCol.upper():
-# # MIWs01[aCol] = MIWs01[aCol].astype('str').str.strip().astype('int', errors='ignore')
-# else:
-# MIWs01[aCol] = MIWs01[aCol].astype('str').str.strip()
+#     if aCol != 'MI Seq':
+#         print(aCol)
+#         if 'DATE' in aCol.upper():
+#             MIWs01[aCol] = pd.to_datetime(MIWs01[aCol], errors='coerce')
+# #         elif 'DAYS' in aCol.upper():
+# #             MIWs01[aCol] = MIWs01[aCol].astype('str').str.strip().astype('int', errors='ignore')
+#         else:
+#             MIWs01[aCol] = MIWs01[aCol].astype('str').str.strip()
 
 
 # In[25]:
@@ -1663,11 +1663,11 @@ wError = 0
 
 
 #for aCMTrk in CMTkrs:
-# print('Importing:\t%s' % aCMTrk.name)
-# #MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, aCMTrk, ImType='CM2', InColM='Old / Dummy CID', InColS='Customer ID', ImMethod=1)
-# MIWs01, LTitle = ImportData(MIWs01, aCMTrk, ImType='CM2', InColM='CIN', InColS='CIN', ImMethod=1)
-# ImportedList += LTitle
-# ImportedList = list(set(ImportedList))
+#    print('Importing:\t%s' % aCMTrk.name)
+#    #MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, aCMTrk, ImType='CM2', InColM='Old / Dummy CID', InColS='Customer ID', ImMethod=1)
+#    MIWs01, LTitle = ImportData(MIWs01, aCMTrk, ImType='CM2', InColM='CIN', InColS='CIN', ImMethod=1)
+#    ImportedList += LTitle
+#    ImportedList = list(set(ImportedList))
 
 #print('\nImported for:')
 #print(LTitle)
@@ -1694,26 +1694,26 @@ wError = 0
 # Update_TgrTriage = 1
 
 # if Update_TgrTriage:
-# start = time.time()
+#     start = time.time()
 
-# TriTgr = pd.read_excel(io=TriTgr_File)
-# TriTgr = TriTgr[['Customer_CIN', 'Customer_ID', 'Customer_Name', 'CMB_Segment', 'Date from QV', 'TgrTriage Status', 'TgrTriage Completion Date']]
+#     TriTgr = pd.read_excel(io=TriTgr_File)
+#     TriTgr = TriTgr[['Customer_CIN', 'Customer_ID', 'Customer_Name', 'CMB_Segment', 'Date from QV', 'TgrTriage Status', 'TgrTriage Completion Date']]
 
-# TriTgr = ProcessDSFile(TriTgr, InCols='Customer_ID', SortField='Date from QV', DateField=True, asd=True)
+#     TriTgr = ProcessDSFile(TriTgr, InCols='Customer_ID', SortField='Date from QV', DateField=True, asd=True)
 
-# MIWs01, LTitle = ImportData(MIWs01, TriTgr, ImMethod=1, ImType="Tri", InColM='Customer ID', InColS='Customer_ID')
-# MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, TriTgr, ImMethod=1, ImType="Tri", InColM='Customer ID', InColS='Customer_ID')
+#     MIWs01, LTitle = ImportData(MIWs01, TriTgr, ImMethod=1, ImType="Tri", InColM='Customer ID', InColS='Customer_ID')
+#     MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, TriTgr, ImMethod=1, ImType="Tri", InColM='Customer ID', InColS='Customer_ID')
 
-# ImportedList += LTitle
-# print('Imported for:')
-# print(LTitle)
-# print('\n')
-# print('Merging Old Record.')
-# MIWs01 = Merge_MI_MIOID(MIWs01, MIWs01_OldCI, 0, LTitle)
+#     ImportedList += LTitle
+#     print('Imported for:')
+#     print(LTitle)
+#     print('\n')
+#     print('Merging Old Record.')
+#     MIWs01 = Merge_MI_MIOID(MIWs01, MIWs01_OldCI, 0, LTitle)
 
-# print('\nImported Tri-Tgr Triage information to Master MI.')
-# stop = time.time()
-# TimeSpent(start, stop)
+#     print('\nImported Tri-Tgr Triage information to Master MI.')
+#     stop = time.time()
+#     TimeSpent(start, stop)
 
 
 # ## Import "Media Sensitive Customers (MSC)"
@@ -1839,7 +1839,7 @@ RMAnaInfo = pd.read_csv(RMAnaInfo_File, encoding='iso-8859-1')
 RMAnaInfo_Col = RMAnaInfo.columns.tolist()
 
 if 'FCC_RISK_RATING' in RMAnaInfo_Col:
-RMAnaInfo = RMAnaInfo.sort_values(by=['FCC_RISK_RATING'])
+    RMAnaInfo = RMAnaInfo.sort_values(by=['FCC_RISK_RATING'])
 RMAnaInfo = RMAnaInfo.drop_duplicates(subset =["REAL_CUST_ID_1"], keep='first')
 
 # RMAnaInfo['cdd_review_dt'] = pd.to_datetime(RMAnaInfo['cdd_review_dt'], format='%d-%b-%y')
@@ -1849,9 +1849,9 @@ RMAnaInfo['cdd_review_dt'] = pd.to_datetime(RMAnaInfo['cdd_review_dt'], format='
 print('Imported data source to memory')
 
 MIWs01_OldCI, LTitle = ImportData(MIWs01_OldCI, RMAnaInfo, ImMethod=0, MapCol=(['Old / Dummy CID', 'Analytics Team', 'Analytics Sub Team', 'Last KYC Date'],
-['REAL_CUST_ID_1', 'TEAM', 'SUB_TEAM', 'cdd_review_dt']))
+                                                      ['REAL_CUST_ID_1', 'TEAM', 'SUB_TEAM', 'cdd_review_dt']))
 MIWs01 = ImportData(MIWs01, RMAnaInfo, ImMethod=0, MapCol=(['Customer ID', 'Analytics Team', 'Analytics Sub Team', 'Last KYC Date'],
-['REAL_CUST_ID_1', 'TEAM', 'SUB_TEAM', 'cdd_review_dt']))[0]
+                                                      ['REAL_CUST_ID_1', 'TEAM', 'SUB_TEAM', 'cdd_review_dt']))[0]
 ImportedList += LTitle
 print('Imported for:')
 print(LTitle)
@@ -1930,8 +1930,8 @@ TimeSpent(start, stop)
 
 # ## Import High Risk & SCC
 # Please update the file name (in brown) for the code below in the following cell.<br>
-# HR01 = pd.read_excel(io='./<font color='brown'>HR List Apr2019.xlsx</font>')<br>
-# SCC = pd.read_excel(io='./<font color='brown'>SCC List Apr2019.xlsx</font>')<br>
+# HR01 =  pd.read_excel(io='./<font color='brown'>HR List Apr2019.xlsx</font>')<br>
+# SCC  = pd.read_excel(io='./<font color='brown'>SCC List Apr2019.xlsx</font>')<br>
 # <br>
 # Since CIN is the key for the mapping, no need to update DataFrame for Old Customer ID.
 
@@ -1943,15 +1943,15 @@ TimeSpent(start, stop)
 
 
 start = time.time()
-HR01 = pd.read_excel(HR01_File,'Sheet1')
-#HR02 = pd.read_excel(io='./HR List Dec2018 RAM1.3.xlsx')
-SCC = pd.read_excel(SCC_File, 'Sheet1')
+HR01 =  pd.read_excel(HR01_File,'Sheet1')
+#HR02 =  pd.read_excel(io='./HR List Dec2018 RAM1.3.xlsx')
+SCC  = pd.read_excel(SCC_File, 'Sheet1')
 #OKYCE = pd.read_excel(io='./OKYC Eligible Base 2018.xlsx')
 
 # if 'SCCS' in SCC.columns.tolist():
-# SCC = SCC[SCC['SCCS'] == 'SCCS']
-# print('Removed record without \'SCCS\' flag in SCC file source.')
-# pass
+#     SCC = SCC[SCC['SCCS'] == 'SCCS']
+#     print('Removed record without \'SCCS\' flag in SCC file source.')
+#     pass
 
 
 
@@ -2214,115 +2214,115 @@ QVF = ['QVOpen', 'QVQC', 'QVClosedAPP', 'QVClosedCAN', 'QVEsc', 'QVQA']
 #QVF = ['QVClosedCAN']
 
 for aFile in Files:
-if aFile[:2].upper() == 'QV':
-for i in range(0, len(QVF)):
-if QVF[i].upper() in aFile.upper():
-print('Importing:\t%s' % aFile)
+    if aFile[:2].upper() == 'QV':
+        for i in range(0, len(QVF)):
+            if QVF[i].upper() in aFile.upper():
+                print('Importing:\t%s' % aFile)
 
-if QVF[i] == 'QVQC':
-#F01 = ['Latest QC Completion Date', 'Review ID']
-#F02 = [True, True]
-#F03 = [True, False]
+                if QVF[i] == 'QVQC':
+                    #F01 = ['Latest QC Completion Date', 'Review ID']
+                    #F02 = [True, True]
+                    #F03 = [True, False]
 
-### Use below setting for QVQC ###
-F01 = ['Latest QC Completion Date', 'Review ID']
-F02 = [True, True]
-F03 = [True, False]
-elif QVF[i] == 'QVClosedCAN':
+                    ### Use below setting for QVQC ###
+                    F01 = ['Latest QC Completion Date', 'Review ID']
+                    F02 = [True, True]
+                    F03 = [True, False]
+                elif QVF[i] == 'QVClosedCAN':
 
-#QT = QVF[i].copy(deep=True)
-#QVF[i] = QT[np.logical_not(QT['Approval/Cancel Date'] == '-')]
-#QT['Approval/Cancel Date']
+                    #QT = QVF[i].copy(deep=True)
+                    #QVF[i] = QT[np.logical_not(QT['Approval/Cancel Date'] == '-')]
+                    #QT['Approval/Cancel Date']
 
-F01 = ['Approval/Cancel Date', 'Review ID']
-F02 = [True, True]
-F03 = [True, False]
+                    F01 = ['Approval/Cancel Date', 'Review ID']
+                    F02 = [True, True]
+                    F03 = [True, False]
 
-#F01 = ['Review ID', 'Approval/Cancel Date']
-#F02 = [True, True]
-#F03 = [False, True]
+                    #F01 = ['Review ID', 'Approval/Cancel Date']
+                    #F02 = [True, True]
+                    #F03 = [False, True]
 
-elif QVF[i] == 'QVClosedAPP':
-### Use this setting for QVClosedAPP ###
-F01 = 'Approval/Cancel Date'
-F02 = True
-F03 = True
+                elif QVF[i] == 'QVClosedAPP':
+                     ### Use this setting for QVClosedAPP ###
+                    F01 = 'Approval/Cancel Date'
+                    F02 = True
+                    F03 = True
 
-elif QVF[i] == 'QVEsc' or QVF[i] == 'QVEscalation':
+                elif QVF[i] == 'QVEsc' or QVF[i] == 'QVEscalation':
 
-### Use this setting for QVEsc ###
+                    ### Use this setting for QVEsc ###
 
-F01 = 'Escalation ID'
-F02 = True
-F03 = False
-elif QVF[i] == 'QVOpen':
+                    F01 = 'Escalation ID'
+                    F02 = True
+                    F03 = False
+                elif QVF[i] == 'QVOpen':
 
-### Use this setting for QVOpen ###
+                    ### Use this setting for QVOpen ###
 
-F01 = 'Review ID'
-F02 = True
-F03 = False
+                    F01 = 'Review ID'
+                    F02 = True
+                    F03 = False
 
-elif QVF[i] == 'QVQA':
+                elif QVF[i] == 'QVQA':
 
-F01 = 'Review ID'
-F02 = True
-F03 = False
-
-
-
-QVS = pd.read_excel(io='./' + aFile)
-
-if QVF[i] == 'QVOpen':
-QVS['Latest level of Approval'] = QVS['Latest level of Approval'].replace('-', 0)
+                    F01 = 'Review ID'
+                    F02 = True
+                    F03 = False
 
 
-#QVO.append(QVS.copy(deep=True))
-#QVO[len(QVO) - 1].name = aFile
-QVS = ProcessDSFile(QVS, 'Customer Number', F01, F02, F03)
-QVS.name = aFile
-if 'QVClosedCAN' in QVS.name:
-#print("Hihihihihihi")
-#print(QVS.shape)
-QVS = QVS[np.logical_not(QVS['Approval/Cancel Date'].isnull())]
-#print(QVS.shape)
-#QVOc.append(QVS.copy(deep=True))
-#QVOc[len(QVOc) - 1].name = aFile
+
+                QVS = pd.read_excel(io='./' + aFile)
+
+                if QVF[i] == 'QVOpen':
+                    QVS['Latest level of Approval'] = QVS['Latest level of Approval'].replace('-', 0)
 
 
-QVType = QVF[i]
-
-MIWs01, LTitle = ImportData(MIWs01, QVS, ImType=QVType, InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
-ImportedList += LTitle
-print('Imported for:')
-print(LTitle)
-print('\n')
-
-if 'QVClosedAPP' in QVType:
-SelQV = QVS['Review Reason'] == 'New to Bank'
-print(np.sum(SelQV))
-QVSETB = QVS[np.logical_not(SelQV)]
-QVSNTB = QVS[SelQV]
-
-MIWs01, LTitle = ImportData(MIWs01, QVSETB, ImType=QVType, InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
-ImportedList += LTitle
-print('Imported for:')
-print(LTitle)
-print('\n')
-
-MIWs01, LTitle = ImportData(MIWs01, QVSNTB, ImType='QVClosedNTBAPP', InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
-ImportedList += LTitle
-print('Imported for:')
-print(LTitle)
-print('\n')
+                #QVO.append(QVS.copy(deep=True))
+                #QVO[len(QVO) - 1].name = aFile
+                QVS = ProcessDSFile(QVS, 'Customer Number', F01, F02, F03)
+                QVS.name = aFile
+                if 'QVClosedCAN' in QVS.name:
+                    #print("Hihihihihihi")
+                    #print(QVS.shape)
+                    QVS = QVS[np.logical_not(QVS['Approval/Cancel Date'].isnull())]
+                    #print(QVS.shape)
+                #QVOc.append(QVS.copy(deep=True))
+                #QVOc[len(QVOc) - 1].name = aFile
 
 
-else:
-MIWs01, LTitle = ImportData(MIWs01, QVS, ImType=QVType, InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
-ImportedList += LTitle
-print('Imported for:')
-print(LTitle)
-print('\n')
+                QVType = QVF[i]
+
+                MIWs01, LTitle = ImportData(MIWs01, QVS, ImType=QVType, InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
+                ImportedList += LTitle
+                print('Imported for:')
+                print(LTitle)
+                print('\n')
+
+                if 'QVClosedAPP' in QVType:
+                    SelQV = QVS['Review Reason'] == 'New to Bank'
+                    print(np.sum(SelQV))
+                    QVSETB = QVS[np.logical_not(SelQV)]
+                    QVSNTB = QVS[SelQV]
+
+                    MIWs01, LTitle = ImportData(MIWs01, QVSETB, ImType=QVType, InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
+                    ImportedList += LTitle
+                    print('Imported for:')
+                    print(LTitle)
+                    print('\n')
+
+                    MIWs01, LTitle = ImportData(MIWs01, QVSNTB, ImType='QVClosedNTBAPP', InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
+                    ImportedList += LTitle
+                    print('Imported for:')
+                    print(LTitle)
+                    print('\n')
+
+
+                else:
+                    MIWs01, LTitle = ImportData(MIWs01, QVS, ImType=QVType, InColM='CIN', InColS='Customer Number', ImMethod=0, MapCol='')
+                    ImportedList += LTitle
+                    print('Imported for:')
+                    print(LTitle)
+                    print('\n')
 
 
 
@@ -2344,35 +2344,35 @@ StaffList = StaffList[['Employee Number', 'ID_to_Name']]
 StaffList = StaffList.set_index('Employee Number')
 
 UIDtoNameCol = ['QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID', 'QVOpen-User ID', 'QVQC-Initial DC Finalised by ID',
-'QVQC-Latest QC Completed by', 'QVClosedAPP-Latest DC Finalised by ID',
-'QVClosedCAN-Latest DC Finalised by ID']
+                'QVQC-Latest QC Completed by', 'QVClosedAPP-Latest DC Finalised by ID',
+                'QVClosedCAN-Latest DC Finalised by ID']
 
 
 
 InVV = ['BPM', 'SYSTEM', 'CDDSS_GDMS_HK', 'No Mapping']
 for aCol in UIDtoNameCol:
-#print("Column:\t" + str(aCol))
-aSL = pd.to_numeric(MIWs01[aCol], downcast ='integer', errors='ignore')
+    #print("Column:\t" + str(aCol))
+    aSL = pd.to_numeric(MIWs01[aCol], downcast ='integer', errors='ignore')
 
-if aSL.dtype == 'object':
-for aInVV in InVV:
-Sel01 = MIWs01[aCol] == aInVV
-#MIWs01.loc[Sel01, aCol] = np.NaN
-MIWs01.loc[Sel01, aCol] = 0
-aSL = pd.to_numeric(MIWs01[aCol], downcast ='integer', errors='ignore')
+    if aSL.dtype == 'object':
+        for aInVV in InVV:
+            Sel01 = MIWs01[aCol] == aInVV
+            #MIWs01.loc[Sel01, aCol] = np.NaN
+            MIWs01.loc[Sel01, aCol] = 0
+        aSL = pd.to_numeric(MIWs01[aCol], downcast ='integer', errors='ignore')
 
 
-#print("***************************")
-if aSL.dtype == 'object':
-print('Please check for the value of field' + aCol)
-bSL = aSL.map(StaffList['ID_to_Name'])
+    #print("***************************")
+    if aSL.dtype == 'object':
+        print('Please check for the value of field' + aCol)
+    bSL = aSL.map(StaffList['ID_to_Name'])
 
-aIDSel = np.logical_not(aSL.isnull())
-bIDSel = bSL.isnull()
-IDSel = bIDSel & aIDSel
+    aIDSel = np.logical_not(aSL.isnull())
+    bIDSel = bSL.isnull()
+    IDSel = bIDSel & aIDSel
 
-bSL[IDSel] = aSL[IDSel]
-MIWs01.loc[:, aCol] = bSL
+    bSL[IDSel] = aSL[IDSel]
+    MIWs01.loc[:, aCol] = bSL
 
 #TriggerCode = pd.read_excel(io='./TriggerCode.xlsx')['Trigger Event Code'].dropna().tolist()
 #print(MIWs01['QVOpen-Trigger Description'].shape)
@@ -2383,21 +2383,21 @@ TC = TC.tolist()
 TTC = []
 for aTC in TriggerCode:
 
-if (aTC[0:2] != 'TE') & (aTC[0:2] != 'IT'):
-TriggerCode.remove(aTC)
+    if (aTC[0:2] != 'TE') & (aTC[0:2] != 'IT'):
+        TriggerCode.remove(aTC)
 
 
 for aTC in TC:
-MTC = ""
-Ctr = 0
-#print(aTC)
-for aTCE in TriggerCode:
+    MTC = ""
+    Ctr = 0
+    #print(aTC)
+    for aTCE in TriggerCode:
 
-if aTC.find(aTCE) > -1 :
-#print("\t"+aTCE)
-MTC = MTC + aTCE + ","
-Ctr = Ctr + 1
-TTC.append(MTC)
+        if aTC.find(aTCE) > -1 :
+            #print("\t"+aTCE)
+            MTC = MTC + aTCE + ","
+            Ctr = Ctr + 1
+    TTC.append(MTC)
 
 #print(len(TTC))
 MIWs01.loc[:, 'QVOpen-Trigger Description'] = TTC
@@ -2426,31 +2426,31 @@ TimeSpent(start, stop)
 
 QVCheck = []
 for aCol in MIWs01.columns.tolist():
-for aQV in QVF:
-if aQV in aCol:
-QVCheck.append(aCol)
-pass
-pass
-pass
+    for aQV in QVF:
+        if aQV in aCol:
+            QVCheck.append(aCol)
+            pass
+        pass
+    pass
 QVCheck.remove("QVClosedAPP-Approval/Cancel Date > T0")
 QVCheck.remove("QVClosedAPP-Approval/Cancel Year-Month")
 QVCheck.remove("QVClosedCAN-Approval/Cancel Year-Month")
 QVCheck.remove("QVQCWF-Initial CRT Finalization Date")
 QVCheck.remove("QVQCWF-Total Marks Deducted For RDC due to KYC Ops Error")
 #if 'QVClosedNTBAPP-Approval/Cancel Date' in QVCheck:
-# QVCheck.remove("QVClosedNTBAPP-Approval/Cancel Date")
+#    QVCheck.remove("QVClosedNTBAPP-Approval/Cancel Date")
 #if 'QVClosedNTBAPP-Last CDD Review Completion Date' in QVCheck:
-# QVCheck.remove("QVClosedNTBAPP-Last CDD Review Completion Date")
+#    QVCheck.remove("QVClosedNTBAPP-Last CDD Review Completion Date")
 TRecord = MIWs01.shape[0]
 wError = 0
 for aCol in QVCheck:
-if np.sum(MIWs01[aCol].isnull()) >= TRecord:
-print('Please check the QVFiles with column:\t%s' % aCol)
-pass
-pass
+    if np.sum(MIWs01[aCol].isnull()) >= TRecord:
+        print('Please check the QVFiles with column:\t%s' % aCol)
+        pass
+    pass
 
 if wError == 0:
-print('QVFiles need to be checked but python will stll run no matter what')
+    print('QVFiles need to be checked but python will stll run no matter what')
 
 
 # ## Import Incoming Doc Register Data (Demised)
@@ -2538,21 +2538,21 @@ MIWs01['QVClosedCAN-Approval/Cancel Date'] = pd.to_datetime(MIWs01['QVClosedCAN-
 
 
 #MITemp_Result = MIWs01[['Customer ID', 'CIN', 'Old / Dummy CID', 'S1 Report Date', 'Overall_Status_S1', 'T0 CM Name',
-# 'T0 CM Team Head', 'T0',
-# 'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',
-# 'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities']]
+#                             'T0 CM Team Head', 'T0',
+#                             'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',
+#                            'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities']]
 #MITemp_Result.to_excel('S1_Imported.xlsx')
 
 
 # In[ ]:
 
 
-# get_ipython().run_cell_magic('time', '', "MIWs01 = ImportStage1Report(MIWs01, S1_Report_Ext, StaffList_c.copy(deep=True))\nLTitle = ['S1 Report Date', 'Overall_Status_S1', 'T0 CM Name',\n 'T0 CM Team Head', 'T0',\n 'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',\n 'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities', 'Acceleration T0 Date','S1 CM Team']\nImportedList += LTitle\n\nstop = time.time()\nTimeSpent(start, stop)\n")
+# get_ipython().run_cell_magic('time', '', "MIWs01 = ImportStage1Report(MIWs01, S1_Report_Ext, StaffList_c.copy(deep=True))\nLTitle = ['S1 Report Date', 'Overall_Status_S1', 'T0 CM Name',\n                             'T0 CM Team Head', 'T0',\n                             'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',\n                            'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities', 'Acceleration T0 Date','S1 CM Team']\nImportedList += LTitle\n\nstop = time.time()\nTimeSpent(start, stop)\n")
 MIWs01 = ImportStage1Report(MIWs01, S1_Report_Ext, StaffList_c.copy(deep=True))
 LTitle = ['S1 Report Date', 'Overall_Status_S1', 'T0 CM Name',
-'T0 CM Team Head', 'T0',
-'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',
-'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities', 'Acceleration T0 Date','S1 CM Team']
+                             'T0 CM Team Head', 'T0',
+                             'T30 Rmdr Letter date (Actual)', 'T60 Rmdr Letter date (Actual)', 'GWIS_Number',
+                            'KYCI Curt Letter issue date (Actual)', 'S1 Remark', 'S1 Review Type', 'Activities', 'Acceleration T0 Date','S1 CM Team']
 ImportedList += LTitle
 stop = time.time()
 TimeSpent(start, stop)
@@ -2613,24 +2613,24 @@ TimeSpent(start, stop)
 # # MIWs01 = MIWs01_Backup.copy(deep=True)
 # ImportedList += ['Segment', 'Team']
 # for aCust in Cust_wo_Team:
-# SelCustMI = MIWs01['Customer ID'] == aCust
-# SelCustBoW = BoW_Record['Real ID'] == aCust
-# if np.sum(SelCustBoW) > 0:
-# tmpSegment = BoW_Record.loc[SelCustBoW, 'Segment'].tolist()[0]
-# tmpTeam = BoW_Record.loc[SelCustBoW, 'Team'].tolist()[0]
-# tmpRM = BoW_Record.loc[SelCustBoW, 'RM'].tolist()[0]
-# tmpRMID = BoW_Record.loc[SelCustBoW, 'RM Staff ID'].tolist()[0]
+#     SelCustMI = MIWs01['Customer ID'] == aCust
+#     SelCustBoW = BoW_Record['Real ID'] == aCust
+#     if np.sum(SelCustBoW) > 0:
+#         tmpSegment = BoW_Record.loc[SelCustBoW, 'Segment'].tolist()[0]
+#         tmpTeam = BoW_Record.loc[SelCustBoW, 'Team'].tolist()[0]
+#         tmpRM = BoW_Record.loc[SelCustBoW, 'RM'].tolist()[0]
+#         tmpRMID = BoW_Record.loc[SelCustBoW, 'RM Staff ID'].tolist()[0]
 
-# MIWs01.loc[SelCustMI, 'Segment'] = tmpSegment
-# MIWs01.loc[SelCustMI, 'Team'] = tmpTeam
-# MIWs01.loc[SelCustMI, 'RM Name'] = tmpRM
-# MIWs01.loc[SelCustMI, 'RM Staff ID'] = tmpRMID
-# nF += 1
-# # print('Done:\t%s' % (aCust, nF))
-# print('Done:\t%s\t%s\t%s\t%s\t%s\t@\t%d' % (aCust, tmpSegment, tmpTeam, tmpRM, str(tmpRMID), nF))
-# pass
-# else:
-# print('Not Found:\t%s' % aCust)
+#         MIWs01.loc[SelCustMI, 'Segment'] = tmpSegment
+#         MIWs01.loc[SelCustMI, 'Team'] = tmpTeam
+#         MIWs01.loc[SelCustMI, 'RM Name'] = tmpRM
+#         MIWs01.loc[SelCustMI, 'RM Staff ID'] = tmpRMID
+#         nF += 1
+# #         print('Done:\t%s' % (aCust, nF))
+#         print('Done:\t%s\t%s\t%s\t%s\t%s\t@\t%d' % (aCust, tmpSegment, tmpTeam, tmpRM, str(tmpRMID), nF))
+#         pass
+#     else:
+#         print('Not Found:\t%s' % aCust)
 
 
 # ### Code by using Stage 1
@@ -2651,34 +2651,34 @@ TimeSpent(start, stop)
 # nF = 0
 
 # for aCust in Cust_wo_Team:
-# # print(aCust)
-# SelCustMI = MIWs01['Customer ID'] == aCust
-# tmpT0 = MIWs01[SelCustMI]['T0'].tolist()[0]
-# # print(tmpT0)
+# #     print(aCust)
+#     SelCustMI = MIWs01['Customer ID'] == aCust
+#     tmpT0 = MIWs01[SelCustMI]['T0'].tolist()[0]
+# #     print(tmpT0)
 
-# SelS1CIN = S1Tmp['Customer_ID_S1'] == aCust
-# SelS1T0 = S1Tmp['Date_of_T+0_Issue_S1'] == tmpT0
-# SelS1 = SelS1CIN & SelS1T0
-# # print(np.sum(SelS1))
-# if np.sum(SelS1) > 0:
-# tmpSegment = S1Tmp[SelS1]['CMB_Segment_S1'].tolist()[0]
-# tmpTeam = S1Tmp[SelS1]['RM_Team_Group_S1'].tolist()[0]
-# tmpRM = S1Tmp[SelS1]['CMB_Segment_S1'].tolist()[0]
-# tmpRMID = S1Tmp[SelS1]['CMB_Segment_S1'].tolist()[0]
-# nF += 1
-# print('%s\t%s\t%s\t%s\t%s\t%s' % (aCust, str(tmpT0), tmpSegment, tmpTeam, tmpRM, tmpRMID ))
-# MIWs01.loc[SelCustMI, 'Segment'] = tmpSegment
-# MIWs01.loc[SelCustMI, 'RM Name'] = tmpRM
-# MIWs01.loc[SelCustMI, 'RM Staff ID'] = tmpRMID
-# if tmpTeam == 'COR' or len(tmpTeam) > 3:
-# MIWs01.loc[SelCustMI, 'RM Team Group'] = tmpTeam
-# else:
-# MIWs01.loc[SelCustMI, 'Team'] = tmpTeam
+#     SelS1CIN = S1Tmp['Customer_ID_S1'] == aCust
+#     SelS1T0 = S1Tmp['Date_of_T+0_Issue_S1'] == tmpT0
+#     SelS1 = SelS1CIN & SelS1T0
+# #     print(np.sum(SelS1))
+#     if np.sum(SelS1) > 0:
+#         tmpSegment = S1Tmp[SelS1]['CMB_Segment_S1'].tolist()[0]
+#         tmpTeam = S1Tmp[SelS1]['RM_Team_Group_S1'].tolist()[0]
+#         tmpRM = S1Tmp[SelS1]['CMB_Segment_S1'].tolist()[0]
+#         tmpRMID = S1Tmp[SelS1]['CMB_Segment_S1'].tolist()[0]
+#         nF += 1
+#         print('%s\t%s\t%s\t%s\t%s\t%s' % (aCust, str(tmpT0), tmpSegment, tmpTeam, tmpRM, tmpRMID ))
+#         MIWs01.loc[SelCustMI, 'Segment'] = tmpSegment
+#         MIWs01.loc[SelCustMI, 'RM Name'] = tmpRM
+#         MIWs01.loc[SelCustMI, 'RM Staff ID'] = tmpRMID
+#         if tmpTeam == 'COR' or len(tmpTeam) > 3:
+#             MIWs01.loc[SelCustMI, 'RM Team Group'] = tmpTeam
+#         else:
+#             MIWs01.loc[SelCustMI, 'Team'] = tmpTeam
 
-# else:
-# print('Not Found:\t%s' % aCust)
-# pass
-# # print('***********************************')
+#     else:
+#         print('Not Found:\t%s' % aCust)
+#         pass
+# #     print('***********************************')
 
 
 
@@ -2705,18 +2705,18 @@ TimeSpent(start, stop)
 
 
 # Array2Update = ['QVQC-Initial DC Finalised by ID', 'QVOpen-Latest DC Finalised by ID',
-# 'QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID',
-# 'QVOpen-User ID', 'QVClosedAPP-Latest DC Finalised by ID',
-# 'QVClosedCAN-Latest DC Finalised by ID']
+#                'QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID',
+#                'QVOpen-User ID', 'QVClosedAPP-Latest DC Finalised by ID',
+#                'QVClosedCAN-Latest DC Finalised by ID']
 
 # SelKYCOpsCM = MIWs01['T0'] >= KYCOpsCM_StartDate
 # SelKYCOpsCM = np.logical_and(SelKYCOpsCM, MIWs01['T0'] <= KYCOpsCM_EndDate)
 
 # for aCol in Array2Update:
-# tmp = MIWs01[aCol]
-# tmp[SelKYCOpsCM] = tmp[SelKYCOpsCM].str.replace(' / KYC Ops', '')
-# tmp[np.logical_not(SelKYCOpsCM)] = tmp[np.logical_not(SelKYCOpsCM)].str.replace('CM / ', '')
-# MIWs01[aCol] = tmp
+#     tmp = MIWs01[aCol]
+#     tmp[SelKYCOpsCM] = tmp[SelKYCOpsCM].str.replace(' / KYC Ops', '')
+#     tmp[np.logical_not(SelKYCOpsCM)] = tmp[np.logical_not(SelKYCOpsCM)].str.replace('CM / ', '')
+#     MIWs01[aCol] = tmp
 
 # MIWs01['QVQC-Latest QC Completed by'] = MIWs01['QVQC-Latest QC Completed by'].str.replace('CM / KYC Ops', 'KYC Ops')
 
@@ -2724,41 +2724,41 @@ TimeSpent(start, stop)
 # In[ ]:
 
 
-# get_ipython().run_cell_magic('time', '', "Array2Update = ['QVQC-Initial DC Finalised by ID', 'QVOpen-Latest DC Finalised by ID',\n 'QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID',\n 'QVOpen-User ID', 'QVClosedAPP-Latest DC Finalised by ID',\n 'QVClosedCAN-Latest DC Finalised by ID']\n\nDateArray2Check = ['QVQC-Initial DC Finalised Date', 'QVOpen-Latest DC Finalised Date',\n 'T0', 'QVOpen-Latest DC Finalised Date',\n 'T0', 'QVClosedAPP-Latest DC Finalised Date',\n 'QVClosedCAN-Latest DC Finalised Date']\n\nNTBStaff = ['Santie T T XIA', 'Karena J X DENG', 'Chris G M LIANG']\n\nStaffList_KYCOps = StaffList_c1[StaffList_c1['Team'].fillna('').str.contains('CM / KYC Ops')]\n\nfor i in range(0, len(Array2Update)):\n aCol = Array2Update[i]\n aDateCol = DateArray2Check[i]\n tmp = MIWs01[aCol]\n # tmp[SelKYCOpsCM] = tmp[SelKYCOpsCM].str.replace(' / KYC Ops', '')\n # tmp[np.logical_not(SelKYCOpsCM)] = tmp[np.logical_not(SelKYCOpsCM)].str.replace('CM / ', '')\n # MIWs01[aCol] = tmp\n tmpDate = pd.to_datetime(MIWs01[aDateCol].fillna(pd.NaT))\n for aIndex, aRow in StaffList_KYCOps.iterrows():\n KYCOpsCM_StartDate = aRow['Effective Date']\n# print(KYCOpsCM_StartDate)\n# print(aDateCol)\n# print(aCol)\n SelKYCOpsCMDate = np.logical_and(tmpDate >= KYCOpsCM_StartDate, tmpDate <= KYCOpsCM_EndDate)\n SelKYCOpsCM = (MIWs01[aCol] == aRow['Team'] + ' - ' + aRow['Employee Name'])\n SelinDate = SelKYCOpsCM & SelKYCOpsCMDate\n tmp[SelinDate] = tmp[SelinDate].str.replace(' / KYC Ops', '')\n SeloutDate = SelKYCOpsCM & ~SelKYCOpsCMDate\n tmp[SeloutDate] = tmp[SeloutDate].str.replace('CM / ', '')\n if aRow['Employee Name'] in NTBStaff:\n# print(aRow['Employee Name'])\n tmp[SeloutDate] = 'NTB - '\n MIWs01[aCol] = tmp\n\nMIWs01['QVQC-Latest QC Completed by'] = MIWs01['QVQC-Latest QC Completed by'].str.replace('CM / KYC Ops', 'KYC Ops')\n\n")
+# get_ipython().run_cell_magic('time', '', "Array2Update = ['QVQC-Initial DC Finalised by ID', 'QVOpen-Latest DC Finalised by ID',\n               'QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID',\n               'QVOpen-User ID', 'QVClosedAPP-Latest DC Finalised by ID',\n               'QVClosedCAN-Latest DC Finalised by ID']\n\nDateArray2Check = ['QVQC-Initial DC Finalised Date', 'QVOpen-Latest DC Finalised Date',\n                  'T0', 'QVOpen-Latest DC Finalised Date',\n                  'T0', 'QVClosedAPP-Latest DC Finalised Date',\n                  'QVClosedCAN-Latest DC Finalised Date']\n\nNTBStaff = ['Santie T T XIA', 'Karena J X DENG', 'Chris G M LIANG']\n\nStaffList_KYCOps = StaffList_c1[StaffList_c1['Team'].fillna('').str.contains('CM / KYC Ops')]\n\nfor i in range(0, len(Array2Update)):\n    aCol = Array2Update[i]\n    aDateCol = DateArray2Check[i]\n    tmp = MIWs01[aCol]\n    #     tmp[SelKYCOpsCM] = tmp[SelKYCOpsCM].str.replace(' / KYC Ops', '')\n    #     tmp[np.logical_not(SelKYCOpsCM)] = tmp[np.logical_not(SelKYCOpsCM)].str.replace('CM / ', '')\n    #     MIWs01[aCol] = tmp\n    tmpDate = pd.to_datetime(MIWs01[aDateCol].fillna(pd.NaT))\n    for aIndex, aRow in StaffList_KYCOps.iterrows():\n        KYCOpsCM_StartDate = aRow['Effective Date']\n#         print(KYCOpsCM_StartDate)\n#         print(aDateCol)\n#         print(aCol)\n        SelKYCOpsCMDate = np.logical_and(tmpDate >= KYCOpsCM_StartDate, tmpDate <= KYCOpsCM_EndDate)\n        SelKYCOpsCM = (MIWs01[aCol] == aRow['Team'] + ' - ' + aRow['Employee Name'])\n        SelinDate = SelKYCOpsCM & SelKYCOpsCMDate\n        tmp[SelinDate] = tmp[SelinDate].str.replace(' / KYC Ops', '')\n        SeloutDate = SelKYCOpsCM & ~SelKYCOpsCMDate\n        tmp[SeloutDate] = tmp[SeloutDate].str.replace('CM / ', '')\n        if aRow['Employee Name'] in NTBStaff:\n#             print(aRow['Employee Name'])\n            tmp[SeloutDate] = 'NTB - '\n    MIWs01[aCol] = tmp\n\nMIWs01['QVQC-Latest QC Completed by'] = MIWs01['QVQC-Latest QC Completed by'].str.replace('CM / KYC Ops', 'KYC Ops')\n\n")
 
 Array2Update = ['QVQC-Initial DC Finalised by ID', 'QVOpen-Latest DC Finalised by ID',
-'QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID',
-'QVOpen-User ID', 'QVClosedAPP-Latest DC Finalised by ID',
-'QVClosedCAN-Latest DC Finalised by ID']
+               'QVOpen-Assigned to User', 'QVOpen-Latest DC Finalised by ID',
+               'QVOpen-User ID', 'QVClosedAPP-Latest DC Finalised by ID',
+               'QVClosedCAN-Latest DC Finalised by ID']
 DateArray2Check = ['QVQC-Initial DC Finalised Date', 'QVOpen-Latest DC Finalised Date',
-'T0', 'QVOpen-Latest DC Finalised Date',
-'T0', 'QVClosedAPP-Latest DC Finalised Date',
-'QVClosedCAN-Latest DC Finalised Date']
+                  'T0', 'QVOpen-Latest DC Finalised Date',
+                  'T0', 'QVClosedAPP-Latest DC Finalised Date',
+                  'QVClosedCAN-Latest DC Finalised Date']
 NTBStaff = ['Santie T T XIA', 'Karena J X DENG', 'Chris G M LIANG']
 StaffList_KYCOps = StaffList_c1[StaffList_c1['Team'].fillna('').str.contains('CM / KYC Ops')]
 for i in range(0, len(Array2Update)):
-aCol = Array2Update[i]
-aDateCol = DateArray2Check[i]
-tmp = MIWs01[aCol]
-# tmp[SelKYCOpsCM] = tmp[SelKYCOpsCM].str.replace(' / KYC Ops', '')
-# tmp[np.logical_not(SelKYCOpsCM)] = tmp[np.logical_not(SelKYCOpsCM)].str.replace('CM / ', '')
-# MIWs01[aCol] = tmp
-tmpDate = pd.to_datetime(MIWs01[aDateCol].fillna(pd.NaT))
-for aIndex, aRow in StaffList_KYCOps.iterrows():
-KYCOpsCM_StartDate = aRow['Effective Date']
-# print(KYCOpsCM_StartDate)
-# print(aDateCol)
-# print(aCol)
-SelKYCOpsCMDate = np.logical_and(tmpDate >= KYCOpsCM_StartDate, tmpDate <= KYCOpsCM_EndDate)
-SelKYCOpsCM = (MIWs01[aCol] == aRow['Team'] + ' - ' + aRow['Employee Name'])
-SelinDate = SelKYCOpsCM & SelKYCOpsCMDate
-tmp[SelinDate] = tmp[SelinDate].str.replace(' / KYC Ops', '')
-SeloutDate = SelKYCOpsCM & ~SelKYCOpsCMDate
-tmp[SeloutDate] = tmp[SeloutDate].str.replace('CM / ', '')
-if aRow['Employee Name'] in NTBStaff:
-# print(aRow['Employee Name'])
-tmp[SeloutDate] = 'NTB - '
-MIWs01[aCol] = tmp
+    aCol = Array2Update[i]
+    aDateCol = DateArray2Check[i]
+    tmp = MIWs01[aCol]
+    #     tmp[SelKYCOpsCM] = tmp[SelKYCOpsCM].str.replace(' / KYC Ops', '')
+    #     tmp[np.logical_not(SelKYCOpsCM)] = tmp[np.logical_not(SelKYCOpsCM)].str.replace('CM / ', '')
+    #     MIWs01[aCol] = tmp
+    tmpDate = pd.to_datetime(MIWs01[aDateCol].fillna(pd.NaT))
+    for aIndex, aRow in StaffList_KYCOps.iterrows():
+        KYCOpsCM_StartDate = aRow['Effective Date']
+#         print(KYCOpsCM_StartDate)
+#         print(aDateCol)
+#         print(aCol)
+        SelKYCOpsCMDate = np.logical_and(tmpDate >= KYCOpsCM_StartDate, tmpDate <= KYCOpsCM_EndDate)
+        SelKYCOpsCM = (MIWs01[aCol] == aRow['Team'] + ' - ' + aRow['Employee Name'])
+        SelinDate = SelKYCOpsCM & SelKYCOpsCMDate
+        tmp[SelinDate] = tmp[SelinDate].str.replace(' / KYC Ops', '')
+        SeloutDate = SelKYCOpsCM & ~SelKYCOpsCMDate
+        tmp[SeloutDate] = tmp[SeloutDate].str.replace('CM / ', '')
+        if aRow['Employee Name'] in NTBStaff:
+#             print(aRow['Employee Name'])
+            tmp[SeloutDate] = 'NTB - '
+    MIWs01[aCol] = tmp
 MIWs01['QVQC-Latest QC Completed by'] = MIWs01['QVQC-Latest QC Completed by'].str.replace('CM / KYC Ops', 'KYC Ops')
 
 # In[ ]:
@@ -2826,13 +2826,13 @@ print('Imported MGCSM CM List to Master MI.')
 # In[ ]:
 
 
-KPI = pd.read_excel(KPI_File)
+KPI =  pd.read_excel(KPI_File)
 
 print('Imported KPI duedate to Master MI.')
 KPI = KPI.loc[:, ['Customer Number','Overdue Date']].drop_duplicates()
 KPI.columns = ['CIN','KPI7 Due Date']
 #change data
-KPI.loc[KPI['KPI7 Due Date'] == '-', ['KPI7 Due Date']] = DT.datetime(1900, 1, 1, 0, 0)
+KPI.loc[KPI['KPI7 Due Date'] == '-', ['KPI7 Due Date']]  =  DT.datetime(1900, 1, 1, 0, 0)
 KPI['KPI7 Due Date'] = pd.to_datetime(KPI['KPI7 Due Date'] )
 #DROP DUPLICATES
 KPI_1 = KPI.drop_duplicates()
@@ -2903,37 +2903,37 @@ MIWs01 = FixColumnSeq(MIWs01)
 # In[ ]:
 
 
-# get_ipython().run_cell_magic('time', '', 'if wError == 0:\n start = time.time()\n\n ####### Pre Export Adjustment #######\n# SelGPTeam = MIWs01[\'RM Name\'].str.upper().isin(GPRM_Name)\n# MIWs01.loc[SelGPTeam, \'RM Sub Team\'] = \'G&P\'\n# MIWs01.loc[SelGPTeam, \'RM Team Group\'] = \'G&P\'\n# MIWs01.loc[SelGPTeam, \'Segment\'] = \'CMB\'\n\n\n MIWs01 = FixColumnSeq(MIWs01)\n ImportedList = list(set(ImportedList))\n ImportedList.sort()\n\n\n\n ImportedList02 = ImportedList.copy()\n\n print(\'All imported column(s):\')\n print(ImportedList)\n print(\'\\n\')\n print(\'Exporting...\')\n ImportedList02 = MIWs01.columns.tolist()[:3] + ImportedList02\n DF2 = pd.DataFrame(data={\'Column Name\' : ImportedList})\n MIWs02 = MIWs01[ImportedList02]\n\n ###########\n writer = pd.ExcelWriter(\'MI-\' + DT.datetime.now().strftime("%Y%m%d") + \'.xlsx\')\n ###########\n\n MIWs02.to_excel(writer,\'Master MI\')\n DF2.to_excel(writer,\'Imported Columns\', index=False)\n writer.save()\n print(\'Done!\')\n #MIWs01.to_excel(\'./MI-20190510.xlsx\', index=False)\n stop = time.time()\n\n TimeSpent(start, stop)\nelse:\n print("Please ensure Data are imported properly.")\n')
+# get_ipython().run_cell_magic('time', '', 'if wError == 0:\n    start = time.time()\n\n    ####### Pre Export Adjustment #######\n#     SelGPTeam = MIWs01[\'RM Name\'].str.upper().isin(GPRM_Name)\n#     MIWs01.loc[SelGPTeam, \'RM Sub Team\'] = \'G&P\'\n#     MIWs01.loc[SelGPTeam, \'RM Team Group\'] = \'G&P\'\n#     MIWs01.loc[SelGPTeam, \'Segment\'] = \'CMB\'\n\n\n    MIWs01 = FixColumnSeq(MIWs01)\n    ImportedList = list(set(ImportedList))\n    ImportedList.sort()\n\n\n\n    ImportedList02 = ImportedList.copy()\n\n    print(\'All imported column(s):\')\n    print(ImportedList)\n    print(\'\\n\')\n    print(\'Exporting...\')\n    ImportedList02 = MIWs01.columns.tolist()[:3] + ImportedList02\n    DF2 = pd.DataFrame(data={\'Column Name\' : ImportedList})\n    MIWs02 = MIWs01[ImportedList02]\n\n    ###########\n    writer = pd.ExcelWriter(\'MI-\' + DT.datetime.now().strftime("%Y%m%d") + \'.xlsx\')\n    ###########\n\n    MIWs02.to_excel(writer,\'Master MI\')\n    DF2.to_excel(writer,\'Imported Columns\', index=False)\n    writer.save()\n    print(\'Done!\')\n    #MIWs01.to_excel(\'./MI-20190510.xlsx\', index=False)\n    stop = time.time()\n\n    TimeSpent(start, stop)\nelse:\n    print("Please ensure Data are imported properly.")\n')
 if wError == 0:
-start = time.time()
-####### Pre Export Adjustment #######
-# SelGPTeam = MIWs01['RM Name'].str.upper().isin(GPRM_Name)
-# MIWs01.loc[SelGPTeam, 'RM Sub Team'] = 'G&P'
-# MIWs01.loc[SelGPTeam, 'RM Team Group'] = 'G&P'
-# MIWs01.loc[SelGPTeam, 'Segment'] = 'CMB'
-MIWs01 = FixColumnSeq(MIWs01)
-ImportedList = list(set(ImportedList))
-ImportedList.sort()
-ImportedList02 = ImportedList.copy()
-print('All imported column(s):')
-print(ImportedList)
-print('\n')
-print('Exporting...')
-ImportedList02 = MIWs01.columns.tolist()[:3] + ImportedList02
-DF2 = pd.DataFrame(data={'Column Name' : ImportedList})
-MIWs02 = MIWs01[ImportedList02]
-###########
-writer = pd.ExcelWriter('MI-' + DT.datetime.now().strftime("%Y%m%d") + '.xlsx')
-###########
-MIWs02.to_excel(writer,'Master MI')
-DF2.to_excel(writer,'Imported Columns', index=False)
-writer.save()
-print('Done!')
-#MIWs01.to_excel('./MI-20190510.xlsx', index=False)
-stop = time.time()
-TimeSpent(start, stop)
+    start = time.time()
+    ####### Pre Export Adjustment #######
+#     SelGPTeam = MIWs01['RM Name'].str.upper().isin(GPRM_Name)
+#     MIWs01.loc[SelGPTeam, 'RM Sub Team'] = 'G&P'
+#     MIWs01.loc[SelGPTeam, 'RM Team Group'] = 'G&P'
+#     MIWs01.loc[SelGPTeam, 'Segment'] = 'CMB'
+    MIWs01 = FixColumnSeq(MIWs01)
+    ImportedList = list(set(ImportedList))
+    ImportedList.sort()
+    ImportedList02 = ImportedList.copy()
+    print('All imported column(s):')
+    print(ImportedList)
+    print('\n')
+    print('Exporting...')
+    ImportedList02 = MIWs01.columns.tolist()[:3] + ImportedList02
+    DF2 = pd.DataFrame(data={'Column Name' : ImportedList})
+    MIWs02 = MIWs01[ImportedList02]
+    ###########
+    writer = pd.ExcelWriter('MI-' + DT.datetime.now().strftime("%Y%m%d") + '.xlsx')
+    ###########
+    MIWs02.to_excel(writer,'Master MI')
+    DF2.to_excel(writer,'Imported Columns', index=False)
+    writer.save()
+    print('Done!')
+    #MIWs01.to_excel('./MI-20190510.xlsx', index=False)
+    stop = time.time()
+    TimeSpent(start, stop)
 else:
-print("Please ensure Data are imported properly.")
+    print("Please ensure Data are imported properly.")
 
 
 # # Change Log
@@ -3094,6 +3094,7 @@ print("Please ensure Data are imported properly.")
 # Add code for import "BAU Cust Info RM (CI to CIN)".
 
 # In[ ]:
+
 
 
 
